@@ -36,7 +36,8 @@ class Demo(IO):
             write_json=output_snippets_dir,
             display=0,
             render_pose=0, 
-            model_pose='COCO')
+            model_pose='COCO',
+            hand='')
         command_line = openpose + ' '
         command_line += ' '.join(['--{} {}'.format(k, v) for k, v in openpose_args.items()])
         shutil.rmtree(output_snippets_dir, ignore_errors=True)

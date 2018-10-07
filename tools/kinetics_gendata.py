@@ -36,14 +36,16 @@ def gendata(
         label_out_path,
         num_person_in=5,  #observe the first 5 persons 
         num_person_out=2,  #then choose 2 persons with the highest score 
-        max_frame=300):
+        max_frame=300,
+        debug=False):
 
     feeder = Feeder_kinetics(
         data_path=data_path,
         label_path=label_path,
         num_person_in=num_person_in,
         num_person_out=num_person_out,
-        window_size=max_frame)
+        window_size=max_frame,
+        debug=debug)
 
     sample_name = feeder.sample_name
     sample_label = []
@@ -73,6 +75,8 @@ if __name__ == '__main__':
         '--data_path', default='data/Kinetics/kinetics-skeleton')
     parser.add_argument(
         '--out_folder', default='data/Kinetics/kinetics-skeleton')
+    parser.add_argument(
+        '--debug', default=False)
     arg = parser.parse_args()
 
     part = ['train', 'val']
@@ -81,7 +85,8 @@ if __name__ == '__main__':
         label_path = '{}/kinetics_{}_label.json'.format(arg.data_path, p)
         data_out_path = '{}/{}_data.npy'.format(arg.out_folder, p)
         label_out_path = '{}/{}_label.pkl'.format(arg.out_folder, p)
+        debug = arg.debug
 
         if not os.path.exists(arg.out_folder):
             os.makedirs(arg.out_folder)
-        gendata(data_path, label_path, data_out_path, label_out_path)
+        gendata(data_path, label_path, data_out_path, label_out_path, debug=debug)
