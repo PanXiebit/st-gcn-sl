@@ -45,8 +45,8 @@ class OpenPose_Preprocessor:
         shutil.rmtree(output_snippets_dir, ignore_errors=True)
 
     def process_videos(self, input_dir, output_snippets_dir, output_sequence_dir):
-        os.chdir(input_dir)
-        videos = glob.glob('*.mov')
+        videos = glob.glob('{}/*.mov'.format(input_dir))
+        videos = [os.path.basename(x) for x in videos]
 
         # label info:
         file_label, label_name = self.load_label_info(input_dir)
