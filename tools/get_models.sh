@@ -13,9 +13,9 @@ done < "$reference_model"
 # ------------------------- BODY, FACE AND HAND MODELS -------------------------
 # Downloading body pose (COCO and MPI), face and hand models
 OPENPOSE_URL="http://posefs1.perception.cs.cmu.edu/OpenPose/models/"
-POSE_FOLDER="pose/"
-FACE_FOLDER="face/"
-HAND_FOLDER="hand/"
+POSE_FOLDER="models/pose/"
+FACE_FOLDER="models/face/"
+HAND_FOLDER="models/hand/"
 
 # ------------------------- POSE MODELS -------------------------
 # Body (BODY_25)
