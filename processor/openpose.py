@@ -3,6 +3,7 @@ import os
 import argparse
 import json
 import shutil
+import glob
 
 import numpy as np
 import torch
@@ -44,7 +45,7 @@ class OpenPose_Preprocessor:
         shutil.rmtree(output_snippets_dir, ignore_errors=True)
 
     def process_videos(self, input_dir, output_snippets_dir, output_sequence_dir):
-        videos = os.listdir(input_dir)
+        videos = glob.glob('{}/*.mov'.format(input_dir))
 
         # label info:
         file_label, label_name = self.load_label_info(input_dir)
