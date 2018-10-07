@@ -27,29 +27,35 @@ class OpenPose_Preprocessor:
         self.arg = parser.parse_args(argv)
 
     def start(self):
-        output_snippets_dir = '{}/temp/snippets'.format(self.arg.output_dir)
-        output_sequence_dir = self.arg.output_dir
+        temp_dir = '{}/temp'.format(self.arg.output_dir)
+        temp_snippets_dir = '{}/snippets'.format(temp_dir)
+        label_map_path = '{}/label.json'.format(self.arg.output_dir)
+        output_dir = '{}/data'.format(self.arg.output_dir)
         input_dir = self.arg.input_dir
 
-        # create or clear output directory:
-        if os.path.exists(output_sequence_dir):
-            shutil.rmtree(output_snippets_dir, ignore_errors=True)
-        else:
-            os.makedirs(output_sequence_dir)
+        # prepare output directory:
+        if os.path.exists(self.arg.output_dir):
+            shutil.rmtree(self.arg.output_dir, ignore_errors=True)
+        os.makedirs(output_dir)
 
         # video processing:
-        self.process_videos(input_dir, output_snippets_dir,
-                            output_sequence_dir)
+        label_map = self.process_videos(input_dir, temp_snippets_dir,
+                                        output_dir)
+
+        # save label map
+        with open(label_map_path, 'w') as outfile:
+            json.dump(label_map, outfile)
 
         # remove temp directory content on exit:
-        shutil.rmtree(output_snippets_dir, ignore_errors=True)
+        shutil.rmtree(temp_dir, ignore_errors=True)
 
-    def process_videos(self, input_dir, output_snippets_dir, output_sequence_dir):
+    def process_videos(self, input_dir, temp_snippets_dir, output_dir):
         videos = glob.glob('{}/*.mov'.format(input_dir))
         videos = [os.path.basename(x) for x in videos]
 
         # label info:
         file_label, label_name = self.load_label_info(input_dir)
+        label_map = dict()
 
         if self.arg.debug:
             videos = videos[0:3]
@@ -61,12 +67,23 @@ class OpenPose_Preprocessor:
             video_label_idx = label_name.index(video_label)
 
             # pose estimation
-            self.run_openpose(video_path, output_snippets_dir)
+            self.run_openpose(video_path, temp_snippets_dir)
 
             # pack openpose ouputs
+            video_base_name = os.path.splitext(video)[0]
             video_info = self.pack_outputs(
-                video, video_path, output_snippets_dir, output_sequence_dir, video_label, video_label_idx)
+                video_base_name, video_path, temp_snippets_dir, output_dir, video_label, video_label_idx)
+
+            # label details for current video
+            cur_video = dict()
+            cur_video['has_skeleton'] = True
+            cur_video['label'] = video_info['label']
+            cur_video['label_index'] = video_info['label_index']
+            label_map[video_base_name] = cur_video
+
             print('OK' if video_info['data'] else 'NOK')
+
+        return label_map
 
     def load_label_info(self, input_dir):
         label_name_path = '{}/label_name.txt'.format(input_dir)
@@ -82,10 +99,9 @@ class OpenPose_Preprocessor:
             file_label = dict(map(lambda x: x.split(':'), file_label))
         return file_label, label_name
 
-    def pack_outputs(self, video, video_path, output_snippets_dir, output_sequence_dir, label, label_idx):
-        video_base_name = os.path.splitext(video)[0]
+    def pack_outputs(self, video_base_name, video_path, output_snippets_dir, output_dir, label, label_idx):
         output_sequence_path = '{}/{}.json'.format(
-            output_sequence_dir, video_base_name)
+            output_dir, video_base_name)
         frames = utils.video.get_video_frames(video_path)
         height, width, _ = frames[0].shape
         video_info = utils.openpose.json_pack(
