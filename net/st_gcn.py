@@ -40,7 +40,7 @@ class Model(nn.Module):
         spatial_kernel_size = A.size(0)
         temporal_kernel_size = 9
         kernel_size = (temporal_kernel_size, spatial_kernel_size)
-        self.data_bn = nn.BatchNorm1d(in_channels * A.size(1))
+        self.data_bn = nn.BatchNorm1d(in_channels * A.size(1))              # TODO: parei aqui
         self.st_gcn_networks = nn.ModuleList((
             st_gcn(in_channels, 64, kernel_size, 1, residual=False, **kwargs),
             st_gcn(64, 64, kernel_size, 1, **kwargs),
