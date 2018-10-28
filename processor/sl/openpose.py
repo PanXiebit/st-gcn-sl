@@ -9,7 +9,7 @@ import numpy as np
 import torch
 import skvideo.io
 
-from .io import IO
+from processor.io import IO
 import tools
 import tools.utils as utils
 
@@ -20,11 +20,12 @@ class OpenPose_Preprocessor:
     """
 
     def __init__(self, argv=None):
-        self.load_arg(argv)
+    #    self.load_arg(argv)
+        pass
 
-    def load_arg(self, argv=None):
-        parser = self.get_parser()
-        self.arg = parser.parse_args(argv)
+    #def load_arg(self, argv=None):
+    #    parser = self.get_parser()
+    #    self.arg = parser.parse_args(argv)
 
     def start(self):
         temp_dir = '{}/temp'.format(self.arg.output_dir)
@@ -136,26 +137,26 @@ class OpenPose_Preprocessor:
         print('[{} / {}] Processing \'{}\'...'.format((idx + 1), len(videos), video))
         print('-' * 50)
 
-    @staticmethod
-    def get_parser(add_help=False):
-        # parameter priority: command line > config > default
-        parent_parser = IO.get_parser(add_help=False)
-        parser = argparse.ArgumentParser(
-            add_help=add_help,
-            parents=[parent_parser],
-            description='Preprocessing using OpenPose')
+    # @staticmethod
+    # def get_parser(add_help=False):
+    #     # parameter priority: command line > config > default
+    #     parent_parser = IO.get_parser(add_help=False)
+    #     parser = argparse.ArgumentParser(
+    #         add_help=add_help,
+    #         parents=[parent_parser],
+    #         description='Preprocessing using OpenPose')
 
-        # region arguments yapf: disable
-        parser.add_argument('--input_dir',
-                            help='Path to video input')
-        parser.add_argument('--openpose',
-                            default='3dparty/openpose/build',
-                            help='Path to openpose')
-        parser.add_argument('--output_dir',
-                            help='Path to save results')
-        parser.add_argument('--debug',
-                            help='Debug', default=False)
-        parser.set_defaults(print_log=False)
-        # endregion yapf: enable
+    #     # region arguments yapf: disable
+    #     parser.add_argument('--input_dir',
+    #                         help='Path to video input')
+    #     parser.add_argument('--openpose',
+    #                         default='3dparty/openpose/build',
+    #                         help='Path to openpose')
+    #     parser.add_argument('--output_dir',
+    #                         help='Path to save results')
+    #     parser.add_argument('--debug',
+    #                         help='Debug', default=False)
+    #     parser.set_defaults(print_log=False)
+    #     # endregion yapf: enable
 
-        return parser
+    #     return parser
