@@ -50,7 +50,7 @@ class Graph():
             self.edge = self_link + neighbor_link
             self.center = 1
 
-        if layout == 'openpose-sl':
+        elif layout == 'openpose-sl':
             self.num_node = 130
             self_link = [(i, i) for i in range(self.num_node)]
 

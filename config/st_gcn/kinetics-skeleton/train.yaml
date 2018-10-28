@@ -23,9 +23,9 @@ model_args:
     strategy: 'spatial'
 
 # training
-device: [0,1,2,3]
-batch_size: 256 
-test_batch_size: 256
+device: 0
+batch_size: 3 #256 
+test_batch_size: 3 #256
 
 #optim
 base_lr: 0.1
