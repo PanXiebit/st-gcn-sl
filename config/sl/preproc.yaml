@@ -6,10 +6,10 @@ metadata_file:  /home/cleison/Documentos/dataset/dai-asllvd-BU_glossing_with_var
 clean_workdir: False
 
 phases: 
-  # download, 
-  # split, 
-  # pose, 
-  # holdout,
+  download, 
+  split, 
+  pose, 
+  holdout,
   gendata
 
 holdout:
