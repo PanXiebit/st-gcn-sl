@@ -33,15 +33,15 @@ class Holdout_Preprocessor(Preprocessor):
         print("Source directory: {}".format(input_dir))
         print("Holdout of data to '{}'...".format(output_dir))
 
-        # load labels for split:
-        with open(label_path, 'r') as fp:
-            labels = json.load(fp)
-        X = [k for k in labels]
-        y = [v['label'] for (k, v) in labels.items()]
-
-        if not labels:
+        if not os.path.isfile(label_path):
             print("No data to holdout")
         else:
+            # load labels for split:
+            with open(label_path, 'r') as fp:
+                labels = json.load(fp)
+            X = [k for k in labels]
+            y = [v['label'] for (k, v) in labels.items()]
+
             # Holdout (train, test, val):
             X_train, X_test, X_val, y_train, y_test, y_val = self.holdout_data(
                 X, y, self.test_size, self.val_size)

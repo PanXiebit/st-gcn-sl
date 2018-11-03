@@ -71,7 +71,7 @@ class Video_Preprocessor:
         if self.arg.clean_workdir:
             self.remove_dir(workdir)
 
-        print("DONE")
+        print("\nDONE")
 
     def get_phases(self):
         phases = dict()

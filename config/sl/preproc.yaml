@@ -3,13 +3,13 @@ work_dir:   /home/cleison/Documentos/dataset/workdir
 output_dir: /home/cleison/Documentos/dataset/preprocessing
 openpose:   /home/cleison/Documentos/OpenPose/openpose/build
 metadata_file:  /home/cleison/Documentos/dataset/dai-asllvd-BU_glossing_with_variations_HS_information-extended-urls-RU.xlsx
-clean_workdir: True
+clean_workdir: False
 
 phases: 
   # download, 
-  split, 
-  pose, 
-  holdout,
+  # split, 
+  # pose, 
+  # holdout,
   gendata
 
 holdout:
@@ -28,4 +28,5 @@ gendata:
   joints: 130
   channels: 3
   num_person: 1
-  max_frames: 120
+  max_frames: 60
+  repeat_frames: True

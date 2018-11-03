@@ -22,6 +22,7 @@ class Gendata_Preprocessor(Preprocessor):
         self.channels = self.arg.gendata['channels']
         self.num_person = self.arg.gendata['num_person']
         self.max_frames = self.arg.gendata['max_frames']
+        self.repeat_frames = self.arg.gendata['repeat_frames']
 
     def start(self):
         input_dir = '{}/holdout'.format(self.arg.work_dir)
@@ -44,16 +45,18 @@ class Gendata_Preprocessor(Preprocessor):
             label_out_path = '{}/{}_label.pkl'.format(output_dir, part)
             debug = self.arg.debug
 
+            print("Generating '{}' data...".format(part))
+            
             if not os.path.isfile(label_path):
-                print("Nothing to generate")
+                print(" Nothing to generate")
             else:
-                print("Generating '{}' data...".format(part))
                 self.gendata(data_path, label_path, data_out_path, label_out_path,
                              num_person_in=self.num_person,
                              num_person_out=self.num_person,
                              max_frame=self.max_frames,
                              joints=joints,
                              channels=self.channels,
+                             repeat_frames=self.repeat_frames,
                              debug=debug)
 
         print("Data generation finished.")
@@ -68,6 +71,7 @@ class Gendata_Preprocessor(Preprocessor):
                 joints,
                 max_frame,
                 channels,
+                repeat_frames,
                 debug=False):
 
         feeder = Gendata_Feeder(
@@ -78,6 +82,7 @@ class Gendata_Preprocessor(Preprocessor):
             window_size=max_frame,
             joints=joints,
             channels=channels,
+            repeat_frames=repeat_frames,
             debug=debug)
 
         sample_name = feeder.sample_name

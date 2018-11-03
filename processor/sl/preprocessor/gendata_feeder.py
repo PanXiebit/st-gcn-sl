@@ -4,10 +4,9 @@ import os
 import pickle
 import random
 import sys
+from math import ceil
 
 import numpy as np
-# sys
-# torch
 import torch
 import torch.nn as nn
 from torchvision import datasets, transforms
@@ -34,16 +33,17 @@ class Gendata_Feeder(torch.utils.data.Dataset):
     def __init__(self,
                  data_path,
                  label_path,
+                 joints,
+                 channels,
+                 num_person_in,
+                 num_person_out,
                  ignore_empty_sample=True,
                  random_choose=False,
                  random_shift=False,
                  random_move=False,
                  window_size=-1,
                  pose_matching=False,
-                 num_person_in=5,
-                 num_person_out=2,
-                 joints=18,
-                 channels=3,
+                 repeat_frames=False,
                  debug=False):
         self.debug = debug
         self.data_path = data_path
@@ -58,8 +58,9 @@ class Gendata_Feeder(torch.utils.data.Dataset):
         self.ignore_empty_sample = ignore_empty_sample
         self.joints = joints
         self.channels = channels
+        self.repeat_frames = repeat_frames
+        
         self.load_data()
-        self.max = len(self.sample_name)
 
     def load_data(self):
         # load label
@@ -105,8 +106,14 @@ class Gendata_Feeder(torch.utils.data.Dataset):
             video_info = json.load(f)
 
         # fill data_numpy
+        data = video_info['data']
+
+        if self.repeat_frames:
+            data = self.repeat_frames_in_data(data)
+
         data_numpy = np.zeros((self.C, self.T, self.V, self.num_person_in))
-        for frame_info in video_info['data']:
+        
+        for frame_info in data:
             frame_index = frame_info['frame_index']
             for m, skeleton_info in enumerate(frame_info["skeleton"]):
                 if m >= self.num_person_in:
@@ -163,3 +170,12 @@ class Gendata_Feeder(torch.utils.data.Dataset):
     def calculate_recall_precision(self, score):
         assert (all(self.label >= 0))
         return tools.calculate_recall_precision(self.label, score)
+
+    def repeat_frames_in_data(self, data):
+        if len(data) < self.T:
+            repeats = ceil(self.T / len(data))
+            data_repeated = data * repeats
+            data_repeated = data_repeated[0:self.T]
+            return data_repeated
+        else:
+            return data
