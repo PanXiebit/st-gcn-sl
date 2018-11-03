@@ -1,15 +1,15 @@
-input_dir:  /home/cleison/Documentos/dataset/original
-work_dir:   /home/cleison/Documentos/dataset/workdir
-output_dir: /home/cleison/Documentos/dataset/preprocessing
-openpose:   /home/cleison/Documentos/OpenPose/openpose/build
-metadata_file:  /home/cleison/Documentos/dataset/dai-asllvd-BU_glossing_with_variations_HS_information-extended-urls-RU.xlsx
+input_dir:  /home/cca5/documents/dataset/original
+work_dir:   /home/cca5/documents/dataset/workdir
+output_dir: /home/cca5/documents/dataset/preprocessing
+openpose:   /home/cca5/documents/OpenPose/openpose/build
+metadata_file:  /home/cca5/documents/dataset/dai-asllvd-BU_glossing_with_variations_HS_information-extended-urls-RU.xlsx
 clean_workdir: False
 
 phases: 
-  # download, 
-  # split, 
-  # pose, 
-  # holdout,
+  download, 
+  split, 
+  pose, 
+  holdout,
   gendata
 
 holdout:
