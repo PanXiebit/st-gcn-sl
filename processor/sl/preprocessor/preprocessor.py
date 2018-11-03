@@ -19,6 +19,7 @@ class Preprocessor:
 
     def __init__(self, argv=None):
         self.arg = argv
+        self.file_pattern = self.arg.download['file_pattern']
 
     def start(self):
         pass
@@ -41,20 +42,24 @@ class Preprocessor:
         if os.path.exists(dir):
             shutil.rmtree(dir, ignore_errors=True)
 
-    def load_metadata(self, columns=None):
+    def load_metadata(self, columns=None, nrows=None):
         if not columns:
             columns = self.METADATA_COLUMNS
-        
-        df = pandas.read_excel(self.arg.metadata_path,
-                               na_values=self.METADATA_IGNORED_VALUES)
+
+        df = pandas.read_excel(self.arg.metadata_file,
+                               na_values=self.METADATA_IGNORED_VALUES,
+                               keep_default_na=False)
         df = df[columns]
         df = df.dropna(how='all')
-        norm_columns = {x : self.normalize(x) for x in columns}
+        df = df.head(nrows)
+        norm_columns = {x: self.normalize(x) for x in columns}
         df = df.rename(index=str, columns=norm_columns)
         return df
 
-    def format_filename(self, session, scene, separator='_'):
-        return '{}{}scene{:.0f}-camera{:.0f}.mov'.format(session, separator, scene, 1)
+    def format_filename(self, session, scene):
+        return self.file_pattern.format(session=session,
+                                        scene=int(scene),
+                                        camera=1)
 
     def normalize(self, text):
         special_chars = re.escape(string.punctuation + string.whitespace)

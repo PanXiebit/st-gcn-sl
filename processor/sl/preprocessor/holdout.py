@@ -19,6 +19,11 @@ class Holdout_Preprocessor(Preprocessor):
         Proprocessing though Hold Out split
     """
 
+    def __init__(self, argv=None):
+        super().__init__(argv)
+        self.test_size = (self.arg.holdout['test'] / 100)
+        self.val_size = (self.arg.holdout['val'] / 100)
+
     def start(self):
         # data_dir = '{}/data'.format(self.arg.input_dir)
         input_dir = '{}/poses'.format(self.arg.work_dir)
@@ -26,7 +31,7 @@ class Holdout_Preprocessor(Preprocessor):
         output_dir = '{}/holdout'.format(self.arg.work_dir)
 
         print("Source directory: {}".format(input_dir))
-        print("Holdout of data...".format())
+        print("Holdout of data to '{}'...".format(output_dir))
 
         # load labels for split:
         with open(label_path, 'r') as fp:
@@ -34,19 +39,19 @@ class Holdout_Preprocessor(Preprocessor):
         X = [k for k in labels]
         y = [v['label'] for (k, v) in labels.items()]
 
-        # Holdout (train, test, val):
-        test_size = (self.arg.holdout_test / 100)
-        val_size = (self.arg.holdout_val / 100)
-        X_train, X_test, X_val, y_train, y_test, y_val = self.holdout_data(
-            X, y, test_size, val_size)
+        if not labels:
+            print("No data to holdout")
+        else:
+            # Holdout (train, test, val):
+            X_train, X_test, X_val, y_train, y_test, y_val = self.holdout_data(
+                X, y, self.test_size, self.val_size)
 
-        # Copy items:
-        self.copy_items('train', X_train, y_train,
-                        input_dir, output_dir, labels)
-        self.copy_items('test', X_test, y_test, input_dir, output_dir, labels)
-        self.copy_items('val', X_val, y_val, input_dir, output_dir, labels)
-
-        print("Holdout finished")
+            # Copy items:
+            self.copy_items('train', X_train, y_train,
+                            input_dir, output_dir, labels)
+            self.copy_items('test', X_test, y_test, input_dir, output_dir, labels)
+            self.copy_items('val', X_val, y_val, input_dir, output_dir, labels)
+            print("Holdout complete.")
 
     def holdout_data(self, X, y, test_size, val_size):
         X_train, X_test, y_train, y_test = train_test_split(

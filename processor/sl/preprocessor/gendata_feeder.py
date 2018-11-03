@@ -1,20 +1,22 @@
-# sys
-import os
-import sys
-import numpy as np
-import random
-import pickle
+
 import json
+import os
+import pickle
+import random
+import sys
+
+import numpy as np
+# sys
 # torch
 import torch
 import torch.nn as nn
 from torchvision import datasets, transforms
 
 # operation
-from . import tools
+from feeder import tools
 
 
-class Feeder_SL(torch.utils.data.Dataset):
+class Gendata_Feeder(torch.utils.data.Dataset):
     """ Feeder for skeleton-based action recognition in kinetics-skeleton dataset
     Arguments:
         data_path: the path to '.npy' data, the shape of data should be (N, C, T, V, M)
@@ -56,26 +58,26 @@ class Feeder_SL(torch.utils.data.Dataset):
         self.ignore_empty_sample = ignore_empty_sample
         self.joints = joints
         self.channels = channels
-
         self.load_data()
+        self.max = len(self.sample_name)
 
     def load_data(self):
-        # load file list
-        self.sample_name = os.listdir(self.data_path)
-
-        if self.debug:
-            self.sample_name = self.sample_name[0:2]
-
         # load label
         label_path = self.label_path
+
         with open(label_path) as f:
             label_info = json.load(f)
 
-        sample_id = [name.split('.')[0] for name in self.sample_name]
+        self.sample_name = ["{}.json".format(k) for k in label_info]
+
+        if self.debug:
+            self.sample_name = self.sample_name[0:5]
+
         self.label = np.array(
-            [label_info[id]['label_index'] for id in sample_id])
+            [label_info[k]['label_index'] for k in label_info])
+
         has_skeleton = np.array(
-            [label_info[id]['has_skeleton'] for id in sample_id])
+            [label_info[k]['has_skeleton'] for k in label_info])
 
         # ignore the samples which does not has skeleton sequence
         if self.ignore_empty_sample:
@@ -85,20 +87,16 @@ class Feeder_SL(torch.utils.data.Dataset):
             self.label = self.label[has_skeleton]
 
         # output data shape (N, C, T, V, M)
-        self.N = len(self.sample_name)  #sample
-        self.C = self.channels  #channel
-        self.T = self.window_size  #frame
-        self.V = self.joints  #joint
-        self.M = self.num_person_out  #person
+        self.N = len(self.sample_name)  # sample
+        self.C = self.channels  # channel
+        self.T = self.window_size  # frame
+        self.V = self.joints  # joint
+        self.M = self.num_person_out  # person
 
     def __len__(self):
         return len(self.sample_name)
 
-    def __iter__(self):
-        return self
-
     def __getitem__(self, index):
-
         # output shape (C, T, V, M)
         # get data
         sample_name = self.sample_name[index]

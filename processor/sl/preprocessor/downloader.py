@@ -12,37 +12,46 @@ class Downloader_Preprocessor(Preprocessor):
         Preprocessor for splitting original videos
     """
 
-    URL_PATTERN = 'http://csr.bu.edu/ftp/asl/asllvd/asl-data2/quicktime'
+    def __init__(self, argv=None):
+        super().__init__(argv)
+        self.url = self.arg.download['url']
 
     def start(self):
-        if self.arg.download_videos:
-            self.start_download()
-
+        self.start_download()
+        
     def start_download(self):
         # Example: http://csr.bu.edu/ftp/asl/asllvd/asl-data2/quicktime/<session>/scene<scene#>-camera<camera#>.mov
         output_dir = '{}'.format(self.arg.input_dir)
         self.ensure_dir_exists(output_dir)
 
+        nrows = None
+
+        if self.arg.debug:
+            nrows = 1
+
         # Load metadata:
         print("Loading metadata...")
-        metadata = self.load_metadata(['Session', 'Scene'])
+        metadata = self.load_metadata(['Session', 'Scene'], nrows)
 
-        # Download files:
-        print("Downloading files to '{}'...".format(output_dir))
-        self.ensure_dir_exists(output_dir)
-        self.download_files_in_metadata(metadata, output_dir)
+        if metadata.empty:
+            print("Nothing to download.")
+        else:
+            # Download files:
+            print("Source URL: '{}'".format(self.url))
+            print("Downloading files to '{}'...".format(output_dir))
+            self.ensure_dir_exists(output_dir)
+            self.download_files_in_metadata(metadata, self.url, output_dir)
+            print("Download complete.")
 
-        print("Download complete.")
-
-    def download_files_in_metadata(self, metadata, output_dir):
+    def download_files_in_metadata(self, metadata, url, output_dir):
         downloaded_sessions = set()
 
         for row in metadata.itertuples():
-            src_filename = self.format_filename(row.Session, row.Scene, '/')
-            tgt_filename = self.format_filename(row.Session, row.Scene)
+            src_filename = self.format_filename(row.Session, row.Scene)
+            tgt_filename = src_filename.replace('/', '_')
 
             if tgt_filename not in downloaded_sessions:
-                url = '{}/{}'.format(self.URL_PATTERN, src_filename)
+                url = '{}/{}'.format(url, src_filename)
                 tgt_file = '{}/{}'.format(output_dir, tgt_filename)
 
                 # Download file:

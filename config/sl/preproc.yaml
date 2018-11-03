@@ -1,0 +1,31 @@
+input_dir:  /home/cleison/Documentos/dataset/original
+work_dir:   /home/cleison/Documentos/dataset/workdir
+output_dir: /home/cleison/Documentos/dataset/preprocessing
+openpose:   /home/cleison/Documentos/OpenPose/openpose/build
+metadata_file:  /home/cleison/Documentos/dataset/dai-asllvd-BU_glossing_with_variations_HS_information-extended-urls-RU.xlsx
+clean_workdir: True
+
+phases: 
+  # download, 
+  split, 
+  pose, 
+  holdout,
+  gendata
+
+holdout:
+  test: 20
+  val: 20
+
+download:
+  url: http://csr.bu.edu/ftp/asl/asllvd/asl-data2/quicktime
+  file_pattern: '{session}/scene{scene}-camera{camera}.mov'
+
+split:
+  fps_in: 60
+  fps_out: 30
+
+gendata:
+  joints: 130
+  channels: 3
+  num_person: 1
+  max_frames: 120

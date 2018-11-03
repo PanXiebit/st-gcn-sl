@@ -1,24 +1,27 @@
 
-import os
-import sys
-import pickle
 import argparse
+import os
+import pickle
+import sys
 
 import numpy as np
 from numpy.lib.format import open_memmap
 
+from .gendata_feeder import Gendata_Feeder
 from .preprocessor import Preprocessor
-from feeder.feeder_sl import Feeder_SL
 
 
 class Gendata_Preprocessor(Preprocessor):
     """
         Generate data
     """
-    JOINTS = 130
-    CHANNELS = 3
-    NUM_PERSON = 1
-    MAX_FRAMES = 120
+
+    def __init__(self, argv=None):
+        super().__init__(argv)
+        self.joints = self.arg.gendata['joints']
+        self.channels = self.arg.gendata['channels']
+        self.num_person = self.arg.gendata['num_person']
+        self.max_frames = self.arg.gendata['max_frames']
 
     def start(self):
         input_dir = '{}/holdout'.format(self.arg.work_dir)
@@ -29,7 +32,7 @@ class Gendata_Preprocessor(Preprocessor):
         print("Generating data to '{}'...".format(output_dir))
 
         parts = ['train', 'test', 'val']
-        joints = self.JOINTS
+        joints = self.joints
 
         if self.arg.debug:
             joints = 18
@@ -41,15 +44,17 @@ class Gendata_Preprocessor(Preprocessor):
             label_out_path = '{}/{}_label.pkl'.format(output_dir, part)
             debug = self.arg.debug
 
-            print("Generating '{}' data...".format(part))
-
-            self.gendata(data_path, label_path, data_out_path, label_out_path,
-                         num_person_in=self.NUM_PERSON,
-                         num_person_out=self.NUM_PERSON,
-                         max_frame=self.MAX_FRAMES,
-                         joints=joints,
-                         channels=self.CHANNELS,
-                         debug=debug)
+            if not os.path.isfile(label_path):
+                print("Nothing to generate")
+            else:
+                print("Generating '{}' data...".format(part))
+                self.gendata(data_path, label_path, data_out_path, label_out_path,
+                             num_person_in=self.num_person,
+                             num_person_out=self.num_person,
+                             max_frame=self.max_frames,
+                             joints=joints,
+                             channels=self.channels,
+                             debug=debug)
 
         print("Data generation finished.")
 
@@ -65,7 +70,7 @@ class Gendata_Preprocessor(Preprocessor):
                 channels,
                 debug=False):
 
-        feeder = Feeder_SL(
+        feeder = Gendata_Feeder(
             data_path=data_path,
             label_path=label_path,
             num_person_in=num_person_in,

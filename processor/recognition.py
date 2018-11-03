@@ -108,7 +108,6 @@ class REC_Processor(Processor):
         self.io.print_timer()
 
     def test(self, evaluation=True):
-
         self.model.eval()
         loader = self.data_loader['test']
         loss_value = []
@@ -116,7 +115,6 @@ class REC_Processor(Processor):
         label_frag = []
 
         for data, label in loader:
-            
             # get data
             data = data.float().to(self.dev)
             label = label.long().to(self.dev)

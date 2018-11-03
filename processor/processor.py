@@ -24,7 +24,6 @@ class Processor(IO):
     """
 
     def __init__(self, argv=None):
-
         self.load_arg(argv)
         self.init_environment()
         self.load_model()
@@ -34,7 +33,6 @@ class Processor(IO):
         self.load_optimizer()
 
     def init_environment(self):
-
         super().init_environment()
         self.result = dict()
         self.iter_info = dict()

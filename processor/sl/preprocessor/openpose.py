@@ -20,18 +20,24 @@ class OpenPose_Preprocessor(Preprocessor):
         input_dir = '{}/splits'.format(self.arg.work_dir)
         self.ensure_dir_exists(output_dir)
 
-        # video processing:
-        print("Source directory: '{}'".format(input_dir))
-        print("Estimating poses to '{}'...".format(output_dir))
-        label_map = self.process_videos(input_dir, snippets_dir,
-                                        output_dir)
-
-        # save label map
-        self.save_json(label_map, label_map_path)
-
-    def process_videos(self, input_dir, snippets_dir, output_dir):
-        # label info:
         file_label, label_name = self.load_label_info(input_dir)
+
+        if not file_label:
+            print("Nothing to esimate.")
+        else:
+            # video processing:
+            print("Source directory: '{}'".format(input_dir))
+            print("Estimating poses to '{}'...".format(output_dir))
+            label_map = self.process_videos(input_dir, snippets_dir, output_dir,
+                                            file_label, label_name)
+
+            # save label map
+            self.save_json(label_map, label_map_path)
+            print("Estimation complete.")
+
+    def process_videos(self, input_dir, snippets_dir, output_dir,
+                       file_label, label_name):
+        # label info:
         label_map = dict()
 
         idx = 0
@@ -40,7 +46,7 @@ class OpenPose_Preprocessor(Preprocessor):
         for video, label in file_label.items():
             video_path = '{}/{}'.format(input_dir, video)
 
-            if self.arg.debug and idx >= 3:
+            if self.arg.debug and idx >= 5:
                 break
 
             if os.path.isfile(video_path):
@@ -119,4 +125,4 @@ class OpenPose_Preprocessor(Preprocessor):
                               stdout=FNULL, stderr=subprocess.STDOUT)
 
     def print_progress(self, current, total, video):
-        print("* [{} / {}] \t Processing '{}'...".format(current, total, video))
+        print("* [{} / {}] \t Estimating '{}'...".format(current, total, video))

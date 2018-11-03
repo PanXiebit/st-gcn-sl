@@ -14,30 +14,39 @@ class Splitter_Preprocessor(Preprocessor):
         Preprocessor for splitting original videos
     """
 
-    INPUT_FPS = 60
-    OUTPUT_FPS = 30
+    def __init__(self, argv=None):
+        super().__init__(argv)
+        self.fps_in = self.arg.split['fps_in']
+        self.fps_out = self.arg.split['fps_out']
 
     def start(self):
         input_dir = self.arg.input_dir
         output_dir = '{}/splits'.format(self.arg.work_dir)
         self.ensure_dir_exists(output_dir)
 
+        nrows = None
+
+        # if self.arg.debug:
+        #     nrows = 10
+
         # Load metadata:
         print("Loading metadata...")
         metadata = self.load_metadata(
-            ['Main New Gloss.1', 'Session', 'Scene', 'Start', 'End'])
+            ['Main New Gloss.1', 'Session', 'Scene', 'Start', 'End'], nrows)
 
-        # Split videos:
-        print("Source directory: '{}'".format(input_dir))
-        print("Splitting videos to '{}'...".format(output_dir))
-        labels, files_labels = self.split_videos(
-            metadata, input_dir, output_dir)
+        if metadata.empty:
+            print("Nothing to split.")
+        else:
+            # Split videos:
+            print("Source directory: '{}'".format(input_dir))
+            print("Splitting videos to '{}'...".format(output_dir))
+            labels, files_labels = self.split_videos(
+                metadata, input_dir, output_dir)
 
-        # Save labels:
-        print("Saving labels...")
-        self.save_labels(output_dir, labels, files_labels)
-
-        print("Split finished.")
+            # Save labels:
+            print("Saving labels...")
+            self.save_labels(output_dir, labels, files_labels)
+            print("Split finished.")
 
     def split_videos(self, metadata, input_dir, output_dir):
         labels = set()
@@ -45,6 +54,7 @@ class Splitter_Preprocessor(Preprocessor):
 
         for row in metadata.itertuples():
             filename = self.format_filename(row.Session, row.Scene)
+            filename = filename.replace('/', '_')
             input_file = '{}/{}'.format(input_dir, filename)
 
             if os.path.isfile(input_file):
@@ -60,7 +70,7 @@ class Splitter_Preprocessor(Preprocessor):
                 print("* {} \t {} ({} ~ {})".format(sign, filename, start, end))
                 filename, _ = self.split_video(input_file, output_dir,
                                                sign, start, end,
-                                               self.INPUT_FPS, self.OUTPUT_FPS)
+                                               self.fps_in, self.fps_out)
                 # File x label mapping:
                 files_labels[filename] = sign
 
