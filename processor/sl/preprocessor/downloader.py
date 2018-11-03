@@ -27,7 +27,7 @@ class Downloader_Preprocessor(Preprocessor):
         nrows = None
 
         if self.arg.debug:
-            nrows = 1
+            nrows = 2
 
         # Load metadata:
         print("Loading metadata...")
@@ -51,11 +51,11 @@ class Downloader_Preprocessor(Preprocessor):
             tgt_filename = src_filename.replace('/', '_')
 
             if tgt_filename not in downloaded_sessions:
-                url = '{}/{}'.format(url, src_filename)
+                src_url = '{}/{}'.format(url, src_filename)
                 tgt_file = '{}/{}'.format(output_dir, tgt_filename)
 
                 # Download file:
-                print("Downloading '{}'...".format(url))
+                print("Downloading '{}'...".format(src_url))
                 testfile = request.URLopener()
                 (tempfilename, _) = testfile.retrieve(
                     url, None, self.reporthook)
