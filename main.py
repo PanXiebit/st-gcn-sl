@@ -14,8 +14,10 @@ if __name__ == '__main__':
     processors = dict()
     processors['recognition'] = import_class('processor.recognition.REC_Processor')
     processors['demo'] = import_class('processor.demo.Demo')
-    processors['openpose'] = import_class('processor.openpose.OpenPose_Preprocessor')
-    processors['holdout'] = import_class('processor.holdout.HoldOut_Preprocessor')
+    #rocessors['openpose'] = import_class('processor.openpose.OpenPose_Preprocessor')
+    #processors['holdout'] = import_class('processor.holdout.HoldOut_Preprocessor')
+
+    processors['preprocessing'] = import_class('processor.sl.video_preprocessor.Video_Preprocessor')
     #endregion yapf: enable
 
     # add sub-parser

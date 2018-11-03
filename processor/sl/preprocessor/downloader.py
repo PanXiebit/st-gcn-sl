@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+import math
+import os
+import shutil
+from urllib import request
+
+from .preprocessor import Preprocessor
+
+
+class Downloader_Preprocessor(Preprocessor):
+    """
+        Preprocessor for splitting original videos
+    """
+
+    URL_PATTERN = 'http://csr.bu.edu/ftp/asl/asllvd/asl-data2/quicktime'
+
+    def start(self):
+        if self.arg.download_videos:
+            self.start_download()
+
+    def start_download(self):
+        # Example: http://csr.bu.edu/ftp/asl/asllvd/asl-data2/quicktime/<session>/scene<scene#>-camera<camera#>.mov
+        output_dir = '{}'.format(self.arg.input_dir)
+        self.ensure_dir_exists(output_dir)
+
+        # Load metadata:
+        print("Loading metadata...")
+        metadata = self.load_metadata(['Session', 'Scene'])
+
+        # Download files:
+        print("Downloading files to '{}'...".format(output_dir))
+        self.ensure_dir_exists(output_dir)
+        self.download_files_in_metadata(metadata, output_dir)
+
+        print("Download complete.")
+
+    def download_files_in_metadata(self, metadata, output_dir):
+        downloaded_sessions = set()
+
+        for row in metadata.itertuples():
+            src_filename = self.format_filename(row.Session, row.Scene, '/')
+            tgt_filename = self.format_filename(row.Session, row.Scene)
+
+            if tgt_filename not in downloaded_sessions:
+                url = '{}/{}'.format(self.URL_PATTERN, src_filename)
+                tgt_file = '{}/{}'.format(output_dir, tgt_filename)
+
+                # Download file:
+                print("Downloading '{}'...".format(url))
+                testfile = request.URLopener()
+                (tempfilename, _) = testfile.retrieve(
+                    url, None, self.reporthook)
+
+                # Save file to directory:
+                shutil.move(tempfilename, tgt_file)
+                downloaded_sessions.add(tgt_filename)
+
+    def reporthook(self, blocknum, bs, size):
+        self.progress_bar(blocknum, math.ceil(size / bs))

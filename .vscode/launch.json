@@ -38,6 +38,22 @@
             ]
         },
         {
+            "name": "Preprocessing",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "preprocessing",
+                "--input_dir",  "~/Documentos/dataset/original",
+                "--work_dir", "~/Documentos/dataset/workdir",
+                "--output_dir", "~/Documentos/dataset/preprocessing",
+                "--openpose",   "~/Documentos/OpenPose/openpose/build",
+                "--metadata_path", "~/Documentos/dataset/dai-asllvd-BU_glossing_with_variations_HS_information-extended-urls-RU.xlsx",
+                "--debug", "True"
+            ]
+        },
+        {
             "name": "Holdout split",
             "type": "python",
             "request": "launch",
