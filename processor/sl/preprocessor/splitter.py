@@ -65,7 +65,7 @@ class Splitter_Preprocessor(Preprocessor):
 
                 # Process files:
                 self.print_log(
-                    "* {} \t {} [{}~{}]".format(sign, filename, start, end))
+                    "* {} \t {} [{:.0f}~{:.0f}]".format(sign, filename, start, end))
 
                 # Verify max frames:
                 if self.max_frames and (end - start) > self.max_frames:
