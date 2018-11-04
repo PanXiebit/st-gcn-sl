@@ -54,18 +54,15 @@ class OpenPose_Preprocessor(Preprocessor):
         for video, label in file_label.items():
             video_path = '{}/{}'.format(input_dir, video)
 
-            if self.arg.debug and idx >= 5:
-                break
-
             if os.path.isfile(video_path):
                 label_idx = label_name.index(label)
                 idx += 1
                 self.print_progress(idx, total, video)
-
+                
                 try:
                     # pose estimation
                     self.ensure_dir_exists(snippets_dir)
-                    self.run_openpose(video_path, snippets_dir)
+                    # self.run_openpose(video_path, snippets_dir)
 
                     # pack openpose ouputs
                     video_base_name = os.path.splitext(video)[0]
@@ -84,6 +81,11 @@ class OpenPose_Preprocessor(Preprocessor):
 
                 finally:
                     self.remove_dir(snippets_dir)
+
+                    # Verify debug options:
+                    if self.arg.debug:
+                        if idx >= self.arg.debug_opts['pose_items']:
+                            break
 
         return label_map
 
@@ -131,4 +133,4 @@ class OpenPose_Preprocessor(Preprocessor):
                               stdout=FNULL, stderr=subprocess.STDOUT)
 
     def print_progress(self, current, total, video):
-        self.print_log("* [{} / {}] \t Estimating '{}'...".format(current, total, video))
+        self.print_log("* [{} / {}] \t{} ...".format(current, total, video))

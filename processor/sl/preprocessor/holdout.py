@@ -45,7 +45,7 @@ class Holdout_Preprocessor(Preprocessor):
 
             # Holdout (train, test, val):
             X_train, X_test, X_val, y_train, y_test, y_val = self.holdout_data(
-                X, y, self.test_size / 100, self.val_size / 100)
+                X, y, self.test_size, self.val_size)
 
             # Copy items:
             self.copy_items('train', self.train_size, X_train, y_train,

@@ -172,7 +172,7 @@ class Gendata_Feeder(torch.utils.data.Dataset):
         return tools.calculate_recall_precision(self.label, score)
 
     def repeat_frames_in_data(self, data):
-        if len(data) < self.T:
+        if data and len(data) < self.T:
             repeats = ceil(self.T / len(data))
             data_repeated = data * repeats
             data_repeated = data_repeated[0:self.T]

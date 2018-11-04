@@ -6,15 +6,15 @@ metadata_file:  /home/cleison/Documentos/dataset/dai-asllvd-BU_glossing_with_var
 clean_workdir: False
 
 phases: 
-  download, 
-  split, 
-  pose, 
+  # download, 
+  # split, 
+  # pose, 
   holdout,
   gendata
 
 holdout:
-  test: 20
-  val: 20
+  test: 0
+  val: 40
 
 download:
   url: http://csr.bu.edu/ftp/asl/asllvd/asl-data2/quicktime
@@ -31,3 +31,10 @@ gendata:
   num_person: 1
   max_frames: 60
   repeat_frames: True
+
+
+debug_opts:
+  download_items: 3
+  split_items: 20
+  pose_items: 20
+  gendata_joints: 18

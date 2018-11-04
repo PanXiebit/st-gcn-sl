@@ -92,7 +92,7 @@
             "console": "integratedTerminal",
             "args": [
                 "recognition",
-                "-c", "config/sl/train.yaml"
+                "-c", "config/sl/train.local.debug.yaml"
             ]
         },
         {
@@ -105,7 +105,7 @@
                 "recognition",
                 "-c", "config/sl/test.yaml"
             ]
-        },
+        }/*,
         {
             "name": "Train (Kinetics Skeleton)",
             "type": "python",
@@ -119,6 +119,6 @@
                 "--debug"
                 // "True"
             ]
-        }
+        }*/
     ]
 }

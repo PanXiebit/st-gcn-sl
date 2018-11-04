@@ -108,7 +108,7 @@ class Video_Preprocessor(IO):
                             help='output directory')
         parser.add_argument('-w', '--work_dir',
                             help='working directory')
-        parser.add_argument('-cw', '--clean_workdir',  type=str2bool, default=True,
+        parser.add_argument('-cw', '--clean_workdir',  type=str2bool, default=False,
                             help='clean working directory')
         parser.add_argument('-m', '--metadata_file',
                             help='metadata file')
@@ -124,14 +124,18 @@ class Video_Preprocessor(IO):
 
         parser.add_argument('-ph', '--phases', type=str2list, default=[],
                             help='phases of pipeline')
-        parser.add_argument('-ho', '--holdout', type=str2dict, default="{}",
+        parser.add_argument('-ho', '--holdout', type=str2dict, default=dict(),
                             help='holdout configuration')
-        parser.add_argument('-sp', '--split', type=str2dict, default="{}",
+        parser.add_argument('-sp', '--split', type=str2dict, default=dict(),
                             help='split configuration')
-        parser.add_argument('-dl', '--download', type=str2dict, default="{}",
+        parser.add_argument('-dl', '--download', type=str2dict, default=dict(),
                             help='download configuration')
-        parser.add_argument('-gd', '--gendata', type=str2dict, default="{}",
+        parser.add_argument('-gd', '--gendata', type=str2dict, default=dict(),
                             help='data generation configuration')
+
+        parser.add_argument('-do', '--debug_opts', type=str2dict, 
+                            default=dict(download_items=2, split_items=5, pose_items=3, gendata_joints=18),
+                            help='debug options')
         # endregion yapf: enable
 
         return parser

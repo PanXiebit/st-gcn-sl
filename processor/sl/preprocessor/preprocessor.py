@@ -27,12 +27,21 @@ class Preprocessor(IO):
     def start(self):
         pass
 
-    def progress_bar(self, current, total):
+    def progress_bar(self, current, total, message=None, overwritable=False):
         increments = 50
         percentual = ((current / total) * 100)
         i = int(percentual // (100 / increments))
-        text = "\r|{0: <{1}}| {2:.0f}%".format('█' * i, increments, percentual)
-        print(text, end="\n" if percentual >= 100 else "")
+        prefix = "{} ".format(message) if message else ""
+        text = "\r{}|{: <{}}| {:.0f}%".format(
+            prefix, '█' * i, increments, percentual)
+
+        if overwritable:
+            end = "\r"
+        elif percentual >= 100:
+            end = "\n"
+        else:
+            end = ""
+        print(text, end=end)
 
     def load_metadata(self, columns=None, nrows=None):
         if self.__ensure_metadata():

@@ -36,7 +36,7 @@ class Gendata_Preprocessor(Preprocessor):
         joints = self.joints
 
         if self.arg.debug:
-            joints = 18
+            joints = self.arg.debug_opts['gendata_joints']
 
         for part in parts:
             data_path = '{}/{}'.format(input_dir, part)

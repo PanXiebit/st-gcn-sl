@@ -24,15 +24,10 @@ class Splitter_Preprocessor(Preprocessor):
         output_dir = '{}/splits'.format(self.arg.work_dir)
         self.ensure_dir_exists(output_dir)
 
-        nrows = None
-
-        # if self.arg.debug:
-        #     nrows = 10
-
         # Load metadata:
         self.print_log("Loading metadata...")
         metadata = self.load_metadata(
-            ['Main New Gloss.1', 'Session', 'Scene', 'Start', 'End'], nrows)
+            ['Main New Gloss.1', 'Session', 'Scene', 'Start', 'End'])
 
         if metadata.empty:
             self.print_log("Nothing to split.")
@@ -67,12 +62,18 @@ class Splitter_Preprocessor(Preprocessor):
                     labels.add(sign)
 
                 # Process files:
-                self.print_log("* {} \t {} ({} ~ {})".format(sign, filename, start, end))
+                self.print_log(
+                    "* {} \t {} [{}~{}]".format(sign, filename, start, end))
                 filename, _ = self.split_video(input_file, output_dir,
                                                sign, start, end,
                                                self.fps_in, self.fps_out)
                 # File x label mapping:
                 files_labels[filename] = sign
+
+                # Verify debug option:
+                if self.arg.debug:
+                    if len(files_labels) >= self.arg.debug_opts['split_items']:
+                        break
 
         return labels, files_labels
 

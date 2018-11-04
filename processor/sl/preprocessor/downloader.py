@@ -29,7 +29,7 @@ class Downloader_Preprocessor(Preprocessor):
         nrows = None
 
         if self.arg.debug:
-            nrows = 2
+            nrows = self.arg.debug_opts['download_items']
 
         # Load metadata:
         self.print_log("Loading metadata...")
@@ -56,7 +56,7 @@ class Downloader_Preprocessor(Preprocessor):
                 tmp_file = '{}/{}'.format(tempfile.gettempdir(),
                                           tgt_filename)
                 # Download file:
-                self.print_log("Downloading '{}'...".format(src_filename))
+                self.print_log("* {} ...".format(src_filename))
                 success = self.download_file(src_url, tmp_file)
 
                 if success:
