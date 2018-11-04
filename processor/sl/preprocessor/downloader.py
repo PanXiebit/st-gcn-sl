@@ -2,7 +2,9 @@
 import math
 import os
 import shutil
-from urllib import request
+import subprocess
+import tempfile
+# from urllib import request
 
 from .preprocessor import Preprocessor
 
@@ -18,7 +20,7 @@ class Downloader_Preprocessor(Preprocessor):
 
     def start(self):
         self.start_download()
-        
+
     def start_download(self):
         # Example: http://csr.bu.edu/ftp/asl/asllvd/asl-data2/quicktime/<session>/scene<scene#>-camera<camera#>.mov
         output_dir = '{}'.format(self.arg.input_dir)
@@ -44,25 +46,33 @@ class Downloader_Preprocessor(Preprocessor):
             print("Download complete.")
 
     def download_files_in_metadata(self, metadata, url, output_dir):
-        downloaded_sessions = set()
-
         for row in metadata.itertuples():
             src_filename = self.format_filename(row.Session, row.Scene)
             tgt_filename = src_filename.replace('/', '_')
+            tgt_file = '{}/{}'.format(output_dir, tgt_filename)
 
-            if tgt_filename not in downloaded_sessions:
+            if not os.path.isfile(tgt_file):
                 src_url = '{}/{}'.format(url, src_filename)
-                tgt_file = '{}/{}'.format(output_dir, tgt_filename)
+                tmp_file = '{}/{}'.format(tempfile.gettempdir(),
+                                          tgt_filename)
+                try:
+                    # Download file:
+                    print("Downloading '{}'...".format(src_url))
+                    self.run_wget(src_url, tmp_file)
 
-                # Download file:
-                print("Downloading '{}'...".format(src_url))
-                testfile = request.URLopener()
-                (tempfilename, _) = testfile.retrieve(
-                    url, None, self.reporthook)
+                    # Save file to directory:
+                    shutil.move(tmp_file, tgt_file)
 
-                # Save file to directory:
-                shutil.move(tempfilename, tgt_file)
-                downloaded_sessions.add(tgt_filename)
+                except subprocess.CalledProcessError as e:
+                    print(" FAILED ({} {})".format(e.returncode, e.output))
 
-    def reporthook(self, blocknum, bs, size):
-        self.progress_bar(blocknum, math.ceil(size / bs))
+    def run_wget(self, url, file):
+        command = 'wget {}'.format(url)
+        args = {
+            '-O': file,
+            '-q': '',
+            '--show-progress': ''
+        }
+        command_line = self.create_command_line(command, args)
+        subprocess.check_call(command_line, shell=True,
+                              stderr=subprocess.STDOUT)

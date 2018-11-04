@@ -13,6 +13,14 @@ class OpenPose_Preprocessor(Preprocessor):
         Preprocessor form pose estimation with OpenPose
     """
 
+    def __init__(self, argv=None):
+        super().__init__(argv)
+        self.openpose = '{}/examples/openpose/openpose.bin'.format(
+            self.arg.openpose)
+
+        if not os.path.isfile(self.openpose):
+            raise ValueError('Path to OpenPose is not valid.')
+
     def start(self):
         output_dir = '{}/poses'.format(self.arg.work_dir)
         label_map_path = '{}/label.json'.format(output_dir)
@@ -72,7 +80,7 @@ class OpenPose_Preprocessor(Preprocessor):
                     label_map[video_base_name] = cur_video
 
                 except subprocess.CalledProcessError as e:
-                    print("FAILED ({} {})".format(e.returncode, e.output))
+                    print(" FAILED ({} {})".format(e.returncode, e.output))
 
                 finally:
                     self.remove_dir(snippets_dir)
@@ -104,22 +112,20 @@ class OpenPose_Preprocessor(Preprocessor):
         return video_info
 
     def run_openpose(self, video_path, snippets_dir):
-        openpose = '{}/examples/openpose/openpose.bin'.format(
-            self.arg.openpose)
-        openpose_args = dict(
-            video=video_path,
-            write_json=snippets_dir,
-            display=0,
-            render_pose=0,
-            model_pose='COCO',)
+        command = self.openpose
+        args = {
+            '--video': video_path,
+            '--write_json': snippets_dir,
+            '--display': 0,
+            '--render_pose': 0,
+            '--model_pose': 'COCO'
+        }
 
         if not self.arg.debug:
-            openpose_args['hand'] = ''
-            openpose_args['face'] = ''
+            args['--hand'] = ''
+            args['--face'] = ''
 
-        command_line = openpose + ' '
-        command_line += ' '.join(['--{} {}'.format(k, v)
-                                  for k, v in openpose_args.items()])
+        command_line = self.create_command_line(command, args)
         FNULL = open(os.devnull, 'w')
         subprocess.check_call(command_line, shell=True,
                               stdout=FNULL, stderr=subprocess.STDOUT)

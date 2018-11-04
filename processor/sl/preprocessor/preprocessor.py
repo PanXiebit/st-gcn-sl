@@ -78,3 +78,9 @@ class Preprocessor:
     def save_json(self, data, path):
         with open(path, 'w') as f:
             json.dump(data, f)
+
+    def create_command_line(self, command, args):
+        command_line = command + ' '
+        command_line += ' '.join(['{} {}'.format(k, v)
+                                  for k, v in args.items()])
+        return command_line
