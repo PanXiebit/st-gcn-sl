@@ -72,8 +72,8 @@ class Video_Preprocessor(IO):
             phase(self.arg).start()
 
         # Remove workdir:
-        if self.arg.clean_workdir:
-            self.remove_dir(workdir)
+        # if self.arg.clean_workdir:
+        #     self.remove_dir(workdir)
 
         self.print_log("\nDONE")
 
