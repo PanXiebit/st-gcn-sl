@@ -4,6 +4,7 @@ output_dir: /home/cca5/documents/dataset/preprocessing
 openpose:   /home/cca5/documents/openpose/build
 metadata_file:  /home/cca5/documents/dataset/dai-asllvd-BU_glossing_with_variations_HS_information-extended-urls-RU.xlsx
 clean_workdir: False
+max_frames: 126
 
 phases:
   download,
@@ -29,5 +30,10 @@ gendata:
   joints: 130
   channels: 3
   num_person: 1
-  max_frames: 60
   repeat_frames: True
+
+debug_opts:
+  download_items: 3
+  split_items: 20
+  pose_items: 20
+  gendata_joints: 18

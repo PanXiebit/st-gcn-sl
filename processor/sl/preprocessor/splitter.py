@@ -18,6 +18,7 @@ class Splitter_Preprocessor(Preprocessor):
         super().__init__(argv)
         self.fps_in = self.arg.split['fps_in']
         self.fps_out = self.arg.split['fps_out']
+        self.max_frames = self.arg.max_frames
 
     def start(self):
         input_dir = self.arg.input_dir
@@ -51,9 +52,10 @@ class Splitter_Preprocessor(Preprocessor):
             filename = self.format_filename(row.Session, row.Scene)
             filename = filename.replace('/', '_')
             input_file = '{}/{}'.format(input_dir, filename)
+            sign = self.normalize(str(row.Main_New_Gloss_1)).lower()
+            tgt_filename, tgt_filepath = self.create_filename(sign, output_dir)
 
             if os.path.isfile(input_file):
-                sign = self.normalize(str(row.Main_New_Gloss_1)).lower()
                 start = row.Start
                 end = row.End
 
@@ -64,29 +66,33 @@ class Splitter_Preprocessor(Preprocessor):
                 # Process files:
                 self.print_log(
                     "* {} \t {} [{}~{}]".format(sign, filename, start, end))
-                filename, _ = self.split_video(input_file, output_dir,
-                                               sign, start, end,
-                                               self.fps_in, self.fps_out)
-                # File x label mapping:
-                files_labels[filename] = sign
 
-                # Verify debug option:
-                if self.arg.debug:
-                    if len(files_labels) >= self.arg.debug_opts['split_items']:
-                        break
+                # Verify max frames:
+                if self.max_frames and (end - start) > self.max_frames:
+                    self.print_log(" SKIP (exceeds max frames)")
+                else:
+                    self.split_video(input_file, tgt_filepath,
+                                     sign, start, end,
+                                     self.fps_in, self.fps_out)
 
+                    # File x label mapping:
+                    files_labels[tgt_filename] = sign
+
+                    # Verify debug option:
+                    if self.arg.debug:
+                        if len(files_labels) >= self.arg.debug_opts['split_items']:
+                            break
         return labels, files_labels
 
-    def split_video(self, src_filename, output_dir,
+    def split_video(self, input_file, output_file,
                     sign, start, end,
                     input_fps, output_fps):
         # Create video name:
-        filename, tgt_filepath = self.create_filename(sign, output_dir)
+        # filename, tgt_filepath = self.create_filename(sign, output_dir)
         start_sec = self.frame_to_sec(start, input_fps)
         length_sec = self.frame_to_sec(end - start, input_fps)
-        self.run_ffmpeg(src_filename, tgt_filepath,
+        self.run_ffmpeg(input_file, output_file,
                         start_sec, length_sec, output_fps)
-        return filename, tgt_filepath
 
     def run_ffmpeg(self, src, tgt, start, length, fps):
         if not os.path.isfile(src):

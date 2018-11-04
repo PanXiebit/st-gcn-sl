@@ -100,19 +100,21 @@ class Video_Preprocessor(IO):
             description='Data preprocessor')
 
         # region arguments yapf: disable
-        parser.add_argument('-c', '--config',
+        parser.add_argument('-c', '--config', type=str, default=None,
                             help='configuration file')
-        parser.add_argument('-i', '--input_dir',
+        parser.add_argument('-i', '--input_dir', type=str, default=None,
                             help='input directory')
-        parser.add_argument('-o', '--output_dir',
+        parser.add_argument('-o', '--output_dir', type=str, default=None,
                             help='output directory')
-        parser.add_argument('-w', '--work_dir',
+        parser.add_argument('-w', '--work_dir', type=str, default=None,
                             help='working directory')
         parser.add_argument('-cw', '--clean_workdir',  type=str2bool, default=False,
                             help='clean working directory')
-        parser.add_argument('-m', '--metadata_file',
+        parser.add_argument('-m', '--metadata_file', type=str, default=None,
                             help='metadata file')
-        parser.add_argument('-op', '--openpose',
+        parser.add_argument('-f', '--max_frames', type=int, default=None,
+                            help='maximum number of frames to consider')
+        parser.add_argument('-op', '--openpose', type=str, default=None,
                             help='path to OpenPose')
 
         parser.add_argument('-d', '--debug',  type=str2bool, default=False,
@@ -133,8 +135,9 @@ class Video_Preprocessor(IO):
         parser.add_argument('-gd', '--gendata', type=str2dict, default=dict(),
                             help='data generation configuration')
 
-        parser.add_argument('-do', '--debug_opts', type=str2dict, 
-                            default=dict(download_items=2, split_items=5, pose_items=3, gendata_joints=18),
+        parser.add_argument('-do', '--debug_opts', type=str2dict,
+                            default=dict(download_items=2, split_items=5,
+                                         pose_items=3, gendata_joints=18),
                             help='debug options')
         # endregion yapf: enable
 
