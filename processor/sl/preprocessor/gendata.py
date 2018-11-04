@@ -26,7 +26,7 @@ class Gendata_Preprocessor(Preprocessor):
 
     def start(self):
         input_dir = '{}/holdout'.format(self.arg.work_dir)
-        output_dir = '{}/datagen'.format(self.arg.work_dir)
+        output_dir = '{}'.format(self.arg.output_dir)
         self.ensure_dir_exists(output_dir)
 
         print("Source directory: {}".format(input_dir))
