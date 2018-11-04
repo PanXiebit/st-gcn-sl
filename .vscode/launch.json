@@ -79,11 +79,12 @@
             "console": "integratedTerminal",
             "args": [
                 "preprocessing",
-                "--config", "config/sl/preproc.local.yaml",
-               "--debug", "True"
+                "-c",
+                "config/sl/preproc.local.yaml",
+                "-d",
+                "true"
             ]
         },
-        
         {
             "name": "Train",
             "type": "python",
@@ -92,7 +93,8 @@
             "console": "integratedTerminal",
             "args": [
                 "recognition",
-                "-c", "config/sl/train.local.debug.yaml"
+                "-c",
+                "config/sl/train.local.debug.yaml"
             ]
         },
         {
@@ -103,9 +105,10 @@
             "console": "integratedTerminal",
             "args": [
                 "recognition",
-                "-c", "config/sl/test.yaml"
+                "-c",
+                "config/sl/test.yaml"
             ]
-        }/*,
+        } /*,
         {
             "name": "Train (Kinetics Skeleton)",
             "type": "python",

@@ -62,7 +62,7 @@ class OpenPose_Preprocessor(Preprocessor):
                 try:
                     # pose estimation
                     self.ensure_dir_exists(snippets_dir)
-                    # self.run_openpose(video_path, snippets_dir)
+                    self.run_openpose(video_path, snippets_dir)
 
                     # pack openpose ouputs
                     video_base_name = os.path.splitext(video)[0]
