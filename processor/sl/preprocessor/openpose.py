@@ -31,17 +31,17 @@ class OpenPose_Preprocessor(Preprocessor):
         file_label, label_name = self.load_label_info(input_dir)
 
         if not file_label:
-            print("Nothing to esimate.")
+            self.print_log("Nothing to esimate.")
         else:
             # video processing:
-            print("Source directory: '{}'".format(input_dir))
-            print("Estimating poses to '{}'...".format(output_dir))
+            self.print_log("Source directory: '{}'".format(input_dir))
+            self.print_log("Estimating poses to '{}'...".format(output_dir))
             label_map = self.process_videos(input_dir, snippets_dir, output_dir,
                                             file_label, label_name)
 
             # save label map
             self.save_json(label_map, label_map_path)
-            print("Estimation complete.")
+            self.print_log("Estimation complete.")
 
     def process_videos(self, input_dir, snippets_dir, output_dir,
                        file_label, label_name):
@@ -80,7 +80,7 @@ class OpenPose_Preprocessor(Preprocessor):
                     label_map[video_base_name] = cur_video
 
                 except subprocess.CalledProcessError as e:
-                    print(" FAILED ({} {})".format(e.returncode, e.output))
+                    self.print_log(" FAILED ({} {})".format(e.returncode, e.output))
 
                 finally:
                     self.remove_dir(snippets_dir)
@@ -131,4 +131,4 @@ class OpenPose_Preprocessor(Preprocessor):
                               stdout=FNULL, stderr=subprocess.STDOUT)
 
     def print_progress(self, current, total, video):
-        print("* [{} / {}] \t Estimating '{}'...".format(current, total, video))
+        self.print_log("* [{} / {}] \t Estimating '{}'...".format(current, total, video))

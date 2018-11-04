@@ -14,10 +14,13 @@ from .preprocessor.splitter import Splitter_Preprocessor
 from .preprocessor.holdout import Holdout_Preprocessor
 from .preprocessor.gendata import Gendata_Preprocessor
 
+from .preprocessor.io import IO
 
-class Video_Preprocessor:
+class Video_Preprocessor(IO):
+
     def __init__(self, argv=None):
         self.load_arg(argv)
+        super().__init__(self.arg)
 
     def load_arg(self, argv=None):
         parser = self.get_parser()
@@ -34,7 +37,7 @@ class Video_Preprocessor:
             key = vars(p).keys()
             for k in default_arg.keys():
                 if k not in key:
-                    print('Unknown Arguments: {}'.format(k))
+                    self.print_log('Unknown Arguments: {}'.format(k))
                     assert k in key
 
             parser.set_defaults(**default_arg)
@@ -46,6 +49,7 @@ class Video_Preprocessor:
 
         # Clean workdir:
         if self.arg.clean_workdir:
+            self.remove_dir(workdir)
             self.create_dir(workdir)
 
         # 0. download videos
@@ -71,7 +75,7 @@ class Video_Preprocessor:
         if self.arg.clean_workdir:
             self.remove_dir(workdir)
 
-        print("\nDONE")
+        self.print_log("\nDONE")
 
     def get_phases(self):
         phases = dict()
@@ -83,18 +87,10 @@ class Video_Preprocessor:
         return phases
 
     def print_phase(self, name):
-        print()
-        print("-" * 80)
-        print(name.upper())
-        print("-" * 80)
-
-    def create_dir(self, dir):
-        self.remove_dir(dir)
-        os.makedirs(dir)
-
-    def remove_dir(self, dir):
-        if os.path.exists(dir):
-            shutil.rmtree(dir, ignore_errors=True)
+        self.print_log("")
+        self.print_log("-" * 80)
+        self.print_log(name.upper())
+        self.print_log("-" * 80)
 
     @staticmethod
     def get_parser(add_help=False):
@@ -105,34 +101,37 @@ class Video_Preprocessor:
 
         # region arguments yapf: disable
         parser.add_argument('-c', '--config',
-                            help='Path to config file')
+                            help='configuration file')
         parser.add_argument('-i', '--input_dir',
-                            help='Path to video input')
+                            help='input directory')
         parser.add_argument('-o', '--output_dir',
-                            help='Path to save results')
+                            help='output directory')
         parser.add_argument('-w', '--work_dir',
-                            help='Path to save partial outputs')
-        parser.add_argument('-d', '--debug',  type=str2bool,
-                            default=False, help='Debug')
-        parser.add_argument('-cw', '--clean_workdir',  type=str2bool,
-                            default=True, help='Clean work directory')
+                            help='working directory')
+        parser.add_argument('-cw', '--clean_workdir',  type=str2bool, default=True,
+                            help='clean working directory')
         parser.add_argument('-m', '--metadata_file',
-                            help='Path to metadata file')
-
-        parser.add_argument('-ho', '--holdout', type=str2dict, default="{}",
-                            help='Percentages for holdout')
-        parser.add_argument('-ph', '--phases', type=str2list, default=[],
-                            help='Phases of preprocessing')
-        parser.add_argument('-sp', '--split', type=str2dict, default="{}",
-                            help='')
-        parser.add_argument('-dl', '--download', type=str2dict, default="{}",
-                            help='')
-        parser.add_argument('-gd', '--gendata', type=str2dict, default="{}",
-                            help='')
-
+                            help='metadata file')
         parser.add_argument('-op', '--openpose',
-                            help='Path to openpose')
-        parser.set_defaults(print_log=False)
+                            help='path to OpenPose')
+
+        parser.add_argument('-d', '--debug',  type=str2bool, default=False,
+                            help='debug flag')
+        parser.add_argument('--save_log', type=str2bool, default=True,
+                            help='save logging or not')
+        parser.add_argument('--print_log', type=str2bool, default=True,
+                            help='print logging or not')
+
+        parser.add_argument('-ph', '--phases', type=str2list, default=[],
+                            help='phases of pipeline')
+        parser.add_argument('-ho', '--holdout', type=str2dict, default="{}",
+                            help='holdout configuration')
+        parser.add_argument('-sp', '--split', type=str2dict, default="{}",
+                            help='split configuration')
+        parser.add_argument('-dl', '--download', type=str2dict, default="{}",
+                            help='download configuration')
+        parser.add_argument('-gd', '--gendata', type=str2dict, default="{}",
+                            help='data generation configuration')
         # endregion yapf: enable
 
         return parser

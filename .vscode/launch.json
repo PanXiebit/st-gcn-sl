@@ -79,15 +79,8 @@
             "console": "integratedTerminal",
             "args": [
                 "preprocessing",
-                "--config", "config/sl/preproc.yaml",
-                // "--holdout", "test=30, val=20",
-                // "--phases", "download, split, pose",
-                // "--input_dir",  "~/Documentos/dataset/original",
-                // "--work_dir", "~/Documentos/dataset/workdir",
-                // "--output_dir", "~/Documentos/dataset/preprocessing",
-                // "--openpose",   "~/Documentos/OpenPose/openpose/build",
-                // "--metadata_file", "~/Documentos/dataset/dai-asllvd-BU_glossing_with_variations_HS_information-extended-urls-RU.xlsx",
-                "--debug", "True"
+                "--config", "config/sl/preproc.local.yaml",
+               "--debug", "True"
             ]
         },
         

@@ -32,18 +32,18 @@ class Downloader_Preprocessor(Preprocessor):
             nrows = 2
 
         # Load metadata:
-        print("Loading metadata...")
+        self.print_log("Loading metadata...")
         metadata = self.load_metadata(['Session', 'Scene'], nrows)
 
         if metadata.empty:
-            print("Nothing to download.")
+            self.print_log("Nothing to download.")
         else:
             # Download files:
-            print("Source URL: '{}'".format(self.url))
-            print("Downloading files to '{}'...".format(output_dir))
+            self.print_log("Source URL: '{}'".format(self.url))
+            self.print_log("Downloading files to '{}'...".format(output_dir))
             self.ensure_dir_exists(output_dir)
             self.download_files_in_metadata(metadata, self.url, output_dir)
-            print("Download complete.")
+            self.print_log("Download complete.")
 
     def download_files_in_metadata(self, metadata, url, output_dir):
         for row in metadata.itertuples():
@@ -57,14 +57,14 @@ class Downloader_Preprocessor(Preprocessor):
                                           tgt_filename)
                 try:
                     # Download file:
-                    print("Downloading '{}'...".format(src_url))
+                    self.print_log("Downloading '{}'...".format(src_url))
                     self.run_wget(src_url, tmp_file)
 
                     # Save file to directory:
                     shutil.move(tmp_file, tgt_file)
 
                 except subprocess.CalledProcessError as e:
-                    print(" FAILED ({} {})".format(e.returncode, e.output))
+                    self.print_log(" FAILED ({} {})".format(e.returncode, e.output))
 
     def run_wget(self, url, file):
         command = 'wget {}'.format(url)

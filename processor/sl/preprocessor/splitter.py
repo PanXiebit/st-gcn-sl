@@ -30,23 +30,23 @@ class Splitter_Preprocessor(Preprocessor):
         #     nrows = 10
 
         # Load metadata:
-        print("Loading metadata...")
+        self.print_log("Loading metadata...")
         metadata = self.load_metadata(
             ['Main New Gloss.1', 'Session', 'Scene', 'Start', 'End'], nrows)
 
         if metadata.empty:
-            print("Nothing to split.")
+            self.print_log("Nothing to split.")
         else:
             # Split videos:
-            print("Source directory: '{}'".format(input_dir))
-            print("Splitting videos to '{}'...".format(output_dir))
+            self.print_log("Source directory: '{}'".format(input_dir))
+            self.print_log("Splitting videos to '{}'...".format(output_dir))
             labels, files_labels = self.split_videos(
                 metadata, input_dir, output_dir)
 
             # Save labels:
-            print("Saving labels...")
+            self.print_log("Saving labels...")
             self.save_labels(output_dir, labels, files_labels)
-            print("Split finished.")
+            self.print_log("Split finished.")
 
     def split_videos(self, metadata, input_dir, output_dir):
         labels = set()
@@ -67,7 +67,7 @@ class Splitter_Preprocessor(Preprocessor):
                     labels.add(sign)
 
                 # Process files:
-                print("* {} \t {} ({} ~ {})".format(sign, filename, start, end))
+                self.print_log("* {} \t {} ({} ~ {})".format(sign, filename, start, end))
                 filename, _ = self.split_video(input_file, output_dir,
                                                sign, start, end,
                                                self.fps_in, self.fps_out)
@@ -89,7 +89,7 @@ class Splitter_Preprocessor(Preprocessor):
 
     def run_ffmpeg(self, src, tgt, start, length, fps):
         if not os.path.isfile(src):
-            print('Video not found: %s' % src)
+            self.print_log('Video not found: %s' % src)
 
         else:
             ff = ffmpy.FFmpeg(

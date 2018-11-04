@@ -29,8 +29,8 @@ class Gendata_Preprocessor(Preprocessor):
         output_dir = '{}'.format(self.arg.output_dir)
         self.ensure_dir_exists(output_dir)
 
-        print("Source directory: {}".format(input_dir))
-        print("Generating data to '{}'...".format(output_dir))
+        self.print_log("Source directory: {}".format(input_dir))
+        self.print_log("Generating data to '{}'...".format(output_dir))
 
         parts = ['train', 'test', 'val']
         joints = self.joints
@@ -45,10 +45,10 @@ class Gendata_Preprocessor(Preprocessor):
             label_out_path = '{}/{}_label.pkl'.format(output_dir, part)
             debug = self.arg.debug
 
-            print("Generating '{}' data...".format(part))
+            self.print_log("Generating '{}' data...".format(part))
             
             if not os.path.isfile(label_path):
-                print(" Nothing to generate")
+                self.print_log(" Nothing to generate")
             else:
                 self.gendata(data_path, label_path, data_out_path, label_out_path,
                              num_person_in=self.num_person,
@@ -59,7 +59,7 @@ class Gendata_Preprocessor(Preprocessor):
                              repeat_frames=self.repeat_frames,
                              debug=debug)
 
-        print("Data generation finished.")
+        self.print_log("Data generation finished.")
 
     def gendata(self,
                 data_path,
