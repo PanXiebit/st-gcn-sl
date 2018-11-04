@@ -16,6 +16,7 @@ from .preprocessor.gendata import Gendata_Preprocessor
 
 from .preprocessor.io import IO
 
+
 class Video_Preprocessor(IO):
 
     def __init__(self, argv=None):
@@ -52,22 +53,21 @@ class Video_Preprocessor(IO):
             self.remove_dir(workdir)
             self.create_dir(workdir)
 
-        # 0. download videos
-        # 1. split videos
-        # 2. estimate pose (openpose)
-        # 3. pad frames
+        # 1. download videos
+        # 2. split videos
+        # 3. estimate pose (openpose)
         # 4. holdout
         # 5. process data (python) (generate pkl)
-        pipeline = self.get_phases()
+        pipeline = ['download', 'split', 'pose', 'holdout', 'gendata']
+        phases = self.get_phases()
 
         # Select phases:
         if self.arg.phases:
-            pipeline = {k: v
-                        for (k, v) in pipeline.items()
-                        if k in self.arg.phases}
+            pipeline = [x for x in pipeline if x in self.arg.phases]
 
         # Run pipeline:
-        for name, phase in pipeline.items():
+        for _, name in enumerate(pipeline):
+            phase = phases[name]
             self.print_phase(name)
             phase(self.arg).start()
 
@@ -78,13 +78,13 @@ class Video_Preprocessor(IO):
         self.print_log("\nDONE")
 
     def get_phases(self):
-        phases = dict()
-        phases['download'] = Downloader_Preprocessor
-        phases['split'] = Splitter_Preprocessor
-        phases['pose'] = OpenPose_Preprocessor
-        phases['holdout'] = Holdout_Preprocessor
-        phases['gendata'] = Gendata_Preprocessor
-        return phases
+        return dict(
+            download=Downloader_Preprocessor,
+            split=Splitter_Preprocessor,
+            pose=OpenPose_Preprocessor,
+            holdout=Holdout_Preprocessor,
+            gendata=Gendata_Preprocessor
+        )
 
     def print_phase(self, name):
         self.print_log("")
