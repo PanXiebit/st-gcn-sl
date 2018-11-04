@@ -55,24 +55,11 @@ class Downloader_Preprocessor(Preprocessor):
                 src_url = '{}/{}'.format(url, src_filename)
                 tmp_file = '{}/{}'.format(tempfile.gettempdir(),
                                           tgt_filename)
-                try:
-                    # Download file:
-                    self.print_log("Downloading '{}'...".format(src_url))
-                    self.run_wget(src_url, tmp_file)
+                # Download file:
+                self.print_log("Downloading '{}'...".format(src_filename))
+                success = self.download_file(src_url, tmp_file)
 
+                if success:
                     # Save file to directory:
                     shutil.move(tmp_file, tgt_file)
 
-                except subprocess.CalledProcessError as e:
-                    self.print_log(" FAILED ({} {})".format(e.returncode, e.output))
-
-    def run_wget(self, url, file):
-        command = 'wget {}'.format(url)
-        args = {
-            '-O': file,
-            '-q': '',
-            '--show-progress': ''
-        }
-        command_line = self.create_command_line(command, args)
-        subprocess.check_call(command_line, shell=True,
-                              stderr=subprocess.STDOUT)

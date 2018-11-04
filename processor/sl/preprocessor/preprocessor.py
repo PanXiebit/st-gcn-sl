@@ -8,6 +8,7 @@ import re
 import string
 import torchlight
 from .io import IO
+import subprocess
 
 
 class Preprocessor(IO):
@@ -34,18 +35,52 @@ class Preprocessor(IO):
         print(text, end="\n" if percentual >= 100 else "")
 
     def load_metadata(self, columns=None, nrows=None):
-        if not columns:
-            columns = self.METADATA_COLUMNS
+        if self.__ensure_metadata():
+            if not columns:
+                columns = self.METADATA_COLUMNS
 
-        df = pandas.read_excel(self.arg.metadata_file,
-                               na_values=self.METADATA_IGNORED_VALUES,
-                               keep_default_na=False)
-        df = df[columns]
-        df = df.dropna(how='all')
-        df = df.head(nrows)
-        norm_columns = {x: self.normalize(x) for x in columns}
-        df = df.rename(index=str, columns=norm_columns)
+            df = pandas.read_excel(self.arg.metadata_file,
+                                   na_values=self.METADATA_IGNORED_VALUES,
+                                   keep_default_na=False)
+            df = df[columns]
+            df = df.dropna(how='all')
+            df = df.head(nrows)
+            norm_columns = {x: self.normalize(x) for x in columns}
+            df = df.rename(index=str, columns=norm_columns)
+
         return df
+
+    def __ensure_metadata(self):
+        if os.path.isfile(self.arg.metadata_file):
+            metadata_ok = True
+        else:
+            metadata_url = self.arg.download['metadata_url']
+
+            self.print_log("Downloading metadata to '{}'...".format(
+                self.arg.metadata_file))
+            self.print_log("Source Url: {}".format(metadata_url))
+            metadata_ok = self.download_file(
+                metadata_url, self.arg.metadata_file)
+        return metadata_ok
+
+    def download_file(self, url, file):
+        try:
+            command = 'wget {}'.format(url)
+            args = {
+                '-O': file,
+                '-q': '',
+                '--show-progress': ''
+            }
+            command_line = self.create_command_line(command, args)
+            subprocess.check_call(command_line, shell=True,
+                                  stderr=subprocess.STDOUT)
+            success = True
+
+        except subprocess.CalledProcessError as e:
+            success = False
+            self.print_log(" FAILED ({} {})".format(e.returncode, e.output))
+
+        return success
 
     def format_filename(self, session, scene):
         return self.file_pattern.format(session=session,
