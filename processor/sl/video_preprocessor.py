@@ -88,9 +88,9 @@ class Video_Preprocessor(IO):
 
     def print_phase(self, name):
         self.print_log("")
-        self.print_log("-" * 80)
+        self.print_log("-" * 60)
         self.print_log(name.upper())
-        self.print_log("-" * 80)
+        self.print_log("-" * 60)
 
     @staticmethod
     def get_parser(add_help=False):
