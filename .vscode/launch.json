@@ -108,7 +108,7 @@
                 "-c",
                 "config/sl/test.yaml"
             ]
-        } /*,
+        } ,
         {
             "name": "Train (Kinetics Skeleton)",
             "type": "python",
@@ -120,8 +120,8 @@
                 "-c",
                 "config/st_gcn/kinetics-skeleton/train.yaml",
                 "--debug"
-                // "True"
+                //"true"
             ]
-        }*/
+        }
     ]
 }

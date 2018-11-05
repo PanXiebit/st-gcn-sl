@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import shutil
+import tempfile
 
 import ffmpy
 
@@ -63,17 +64,23 @@ class Splitter_Preprocessor(Preprocessor):
 
                 # Verify max frames:
                 if self.max_frames and (end - start) > self.max_frames:
-                    self.print_file(sign, src_filename, start, end)
+                    self.print_file(tgt_filename, src_filename, start, end)
                     self.print_log(" SKIP (exceeds max frames)")
 
                 else:
                     # Splits only if file is not present:
                     if not os.path.isfile(tgt_filepath):
-                        # Process files:
-                        self.print_file(sign, src_filename, start, end)
-                        self.split_video(src_filepath, tgt_filepath,
+                        tmp_filepath = '{}/{}'.format(tempfile.gettempdir(),
+                                          tgt_filename)
+
+                        # Split file in temporary diretory:
+                        self.print_file(tgt_filename, src_filename, start, end)
+                        self.split_video(src_filepath, tmp_filepath,
                                          sign, start, end,
                                          self.fps_in, self.fps_out)
+                        
+                        # Save file to target directory:
+                        shutil.move(tmp_filepath, tgt_filepath)
 
                     # Stores label and file mappings:
                     if sign not in labels:
@@ -89,9 +96,9 @@ class Splitter_Preprocessor(Preprocessor):
 
         return labels, files_labels
 
-    def print_file(self, sign, filename, start, end):
+    def print_file(self, tgt_filename, src_filename, start, end):
         self.print_log(
-            "* {} \t {} [{:.0f}~{:.0f}]".format(sign, filename, start, end))
+            "* {} \t {} [{:.0f}~{:.0f}]".format(tgt_filename, src_filename, start, end))
 
     def split_video(self, input_file, output_file,
                     sign, start, end,
