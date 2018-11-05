@@ -61,37 +61,37 @@ class Splitter_Preprocessor(Preprocessor):
                 start = row.Start
                 end = row.End
 
-                # Process files:
-                self.print_log(
-                    "* {} \t {} [{:.0f}~{:.0f}]".format(sign, src_filename, start, end))
-
                 # Verify max frames:
                 if self.max_frames and (end - start) > self.max_frames:
+                    self.print_file(sign, src_filename, start, end)
                     self.print_log(" SKIP (exceeds max frames)")
-                
+
                 else:
-                    # Stores label:
+                    # Splits only if file is not present:
+                    if not os.path.isfile(tgt_filepath):
+                        # Process files:
+                        self.print_file(sign, src_filename, start, end)
+                        self.split_video(src_filepath, tgt_filepath,
+                                         sign, start, end,
+                                         self.fps_in, self.fps_out)
+
+                    # Stores label and file mappings:
                     if sign not in labels:
                         labels.add(sign)
 
-                    # Splits only if file is not present:
-                    if not os.path.isfile(tgt_filepath):
-                        self.split_video(src_filepath, tgt_filepath,
-                                        sign, start, end,
-                                        self.fps_in, self.fps_out)
-
-                        # File x label mapping:
-                        files_labels[tgt_filename] = sign
-
-                    # Save file name for skipping in the future:
+                    files_labels[tgt_filename] = sign
                     files_splitted.add(tgt_filename)
 
                     # Verify debug option:
                     if self.arg.debug:
                         if len(files_splitted) >= self.arg.debug_opts['split_items']:
                             break
-                
+
         return labels, files_labels
+
+    def print_file(self, sign, filename, start, end):
+        self.print_log(
+            "* {} \t {} [{:.0f}~{:.0f}]".format(sign, filename, start, end))
 
     def split_video(self, input_file, output_file,
                     sign, start, end,
