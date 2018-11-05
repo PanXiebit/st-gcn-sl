@@ -7,7 +7,7 @@ clean_workdir: False
 max_frames: 126
 
 phases: 
-  download, 
+  # download, 
   split, 
   pose, 
   holdout,

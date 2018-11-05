@@ -57,6 +57,10 @@ class IO:
         with open(path, 'w') as f:
             json.dump(data, f)
 
+    def read_json(self, path):
+        with open(path) as f:
+            return json.load(f)
+
     def create_command_line(self, command, args):
         command_line = command + ' '
         command_line += ' '.join(['{} {}'.format(k, v)
