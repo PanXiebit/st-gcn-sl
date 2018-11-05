@@ -37,17 +37,16 @@ class OpenPose_Preprocessor(Preprocessor):
             self.print_log("Source directory: '{}'".format(input_dir))
             self.print_log("Estimating poses to '{}'...".format(output_dir))
             label_map = self.process_videos(input_dir, snippets_dir, output_dir,
-                                            file_label, label_name)
+                                            file_label, label_name, label_map_path)
 
             # save label map
             self.save_json(label_map, label_map_path)
             self.print_log("Estimation complete.")
 
     def process_videos(self, input_dir, snippets_dir, output_dir,
-                       file_label, label_name):
+                       file_label, label_name, label_map_path):
         # label info:
-        label_map = dict()
-
+        label_map = self.prepare_label_map(label_map_path)
         idx = 0
         total = len(file_label)
 
@@ -57,36 +56,45 @@ class OpenPose_Preprocessor(Preprocessor):
             if os.path.isfile(video_path):
                 label_idx = label_name.index(label)
                 idx += 1
-                self.print_progress(idx, total, video)
-                
-                try:
-                    # pose estimation
-                    self.ensure_dir_exists(snippets_dir)
-                    self.run_openpose(video_path, snippets_dir)
+                video_base_name = os.path.splitext(video)[0]
 
-                    # pack openpose ouputs
-                    video_base_name = os.path.splitext(video)[0]
-                    video_info = self.pack_outputs(
-                        video_base_name, video_path, snippets_dir, output_dir, label, label_idx)
+                if video_base_name not in label_map:
+                    try:
+                        # pose estimation
+                        self.print_progress(idx, total, video)
+                        self.ensure_dir_exists(snippets_dir)
+                        self.run_openpose(video_path, snippets_dir)
 
-                    # label details for current video
-                    cur_video = dict()
-                    cur_video['has_skeleton'] = len(video_info['data']) > 0
-                    cur_video['label'] = video_info['label']
-                    cur_video['label_index'] = video_info['label_index']
-                    label_map[video_base_name] = cur_video
+                        # pack openpose ouputs
+                        video_info = self.pack_outputs(
+                            video_base_name, video_path, snippets_dir, output_dir, label, label_idx)
 
-                except subprocess.CalledProcessError as e:
-                    self.print_log(" FAILED ({} {})".format(e.returncode, e.output))
+                        # label details for current video
+                        cur_video = dict()
+                        cur_video['has_skeleton'] = len(video_info['data']) > 0
+                        cur_video['label'] = video_info['label']
+                        cur_video['label_index'] = video_info['label_index']
+                        label_map[video_base_name] = cur_video
 
-                finally:
-                    self.remove_dir(snippets_dir)
+                    except subprocess.CalledProcessError as e:
+                        self.print_log(" FAILED ({} {})".format(
+                            e.returncode, e.output))
 
-                    # Verify debug options:
-                    if self.arg.debug:
-                        if idx >= self.arg.debug_opts['pose_items']:
-                            break
+                    finally:
+                        self.remove_dir(snippets_dir)
 
+                # Verify debug options:
+                if self.arg.debug:
+                    if idx >= self.arg.debug_opts['pose_items']:
+                        break
+
+        return label_map
+
+    def prepare_label_map(self, label_map_path):
+        label_map = dict()
+
+        if os.path.isfile(label_map_path):
+            label_map = self.read_json(label_map_path)
         return label_map
 
     def load_label_info(self, input_dir):
