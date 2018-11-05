@@ -36,4 +36,5 @@ debug_opts:
   download_items: 3
   split_items: 20
   pose_items: 20
+  gendata_items: 20
   gendata_joints: 18

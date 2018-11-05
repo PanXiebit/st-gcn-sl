@@ -1,11 +1,11 @@
-work_dir: ./work_dir/recognition/kinetics_skeleton/ST_GCN
+work_dir: ./work_dir/recognition/sl/ST_GCN
 
 # feeder
 feeder: feeder.feeder.Feeder
 train_feeder_args:
   random_choose: True
   random_move: True
-  window_size: 60 
+  window_size: 126
   data_path: /home/cleison/Documentos/dataset/preprocessing/train_data.npy 
   label_path: /home/cleison/Documentos/dataset/preprocessing/train_label.pkl
 test_feeder_args:
@@ -16,7 +16,7 @@ test_feeder_args:
 model: net.st_gcn.Model
 model_args:
   in_channels: 3
-  num_class: 12 #400
+  num_class: 49 #400
   edge_importance_weighting: True
   graph_args:
     layout: 'openpose' #'openpose'
@@ -24,8 +24,8 @@ model_args:
 
 # training
 device: [0]
-batch_size: 10 #256 
-test_batch_size: 10 #256
+batch_size: 20 #256 
+test_batch_size: 20 #256
 
 #optim
 base_lr: 0.1

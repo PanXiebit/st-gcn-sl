@@ -34,8 +34,10 @@ class Gendata_Preprocessor(Preprocessor):
 
         parts = ['train', 'test', 'val']
         joints = self.joints
+        num_items = None
 
         if self.arg.debug:
+            num_items = self.arg.debug_opts['gendata_items']
             joints = self.arg.debug_opts['gendata_joints']
 
         for part in parts:
@@ -57,7 +59,8 @@ class Gendata_Preprocessor(Preprocessor):
                              joints=joints,
                              channels=self.channels,
                              repeat_frames=self.repeat_frames,
-                             debug=debug)
+                             debug=debug,
+                             num_items=num_items)
 
         self.print_log("Data generation finished.")
 
@@ -72,7 +75,8 @@ class Gendata_Preprocessor(Preprocessor):
                 max_frame,
                 channels,
                 repeat_frames,
-                debug=False):
+                debug=False,
+                num_items=None):
 
         feeder = Gendata_Feeder(
             data_path=data_path,
@@ -83,7 +87,8 @@ class Gendata_Preprocessor(Preprocessor):
             joints=joints,
             channels=channels,
             repeat_frames=repeat_frames,
-            debug=debug)
+            debug=debug,
+            num_items=num_items)
 
         sample_name = feeder.sample_name
         sample_label = []
