@@ -44,7 +44,8 @@ class Gendata_Feeder(torch.utils.data.Dataset):
                  window_size=-1,
                  pose_matching=False,
                  repeat_frames=False,
-                 debug=False):
+                 debug=False,
+                 num_items=None):
         self.debug = debug
         self.data_path = data_path
         self.label_path = label_path
@@ -59,6 +60,7 @@ class Gendata_Feeder(torch.utils.data.Dataset):
         self.joints = joints
         self.channels = channels
         self.repeat_frames = repeat_frames
+        self.num_items = num_items
         
         self.load_data()
 
@@ -71,8 +73,8 @@ class Gendata_Feeder(torch.utils.data.Dataset):
 
         self.sample_name = ["{}.json".format(k) for k in label_info]
 
-        if self.debug:
-            self.sample_name = self.sample_name[0:5]
+        if self.num_items:
+            self.sample_name = self.sample_name[0:self.num_items]
 
         self.label = np.array(
             [label_info[k]['label_index'] for k in label_info])

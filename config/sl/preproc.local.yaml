@@ -7,7 +7,7 @@ clean_workdir: False
 max_frames: 126
 
 phases: 
-  # download, 
+  download, 
   split, 
   pose, 
   holdout,
@@ -37,4 +37,5 @@ debug_opts:
   download_items: 10
   split_items: 100
   pose_items: 100
+  gendata_items: 100
   gendata_joints: 18
