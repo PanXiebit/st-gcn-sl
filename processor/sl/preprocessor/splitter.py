@@ -47,41 +47,50 @@ class Splitter_Preprocessor(Preprocessor):
     def split_videos(self, metadata, input_dir, output_dir):
         labels = set()
         files_labels = dict()
+        files_splitted = set()
 
         for row in metadata.itertuples():
-            filename = self.format_filename(row.Session, row.Scene)
-            filename = filename.replace('/', '_')
-            input_file = '{}/{}'.format(input_dir, filename)
+            src_filename = self.format_filename(row.Session, row.Scene)
+            src_filename = src_filename.replace('/', '_')
+            src_filepath = '{}/{}'.format(input_dir, src_filename)
             sign = self.normalize(str(row.Main_New_Gloss_1)).lower()
-            tgt_filename, tgt_filepath = self.create_filename(sign, output_dir)
+            tgt_filename = self.create_filename(sign, files_splitted)
+            tgt_filepath = '{}/{}'.format(output_dir, tgt_filename)
 
-            if os.path.isfile(input_file):
+            if os.path.isfile(src_filepath):
                 start = row.Start
                 end = row.End
 
-                # Store label:
-                if sign not in labels:
-                    labels.add(sign)
-
                 # Process files:
                 self.print_log(
-                    "* {} \t {} [{:.0f}~{:.0f}]".format(sign, filename, start, end))
+                    "* {} \t {} [{:.0f}~{:.0f}]".format(sign, src_filename, start, end))
 
                 # Verify max frames:
                 if self.max_frames and (end - start) > self.max_frames:
                     self.print_log(" SKIP (exceeds max frames)")
+                
                 else:
-                    self.split_video(input_file, tgt_filepath,
-                                     sign, start, end,
-                                     self.fps_in, self.fps_out)
+                    # Stores label:
+                    if sign not in labels:
+                        labels.add(sign)
 
-                    # File x label mapping:
-                    files_labels[tgt_filename] = sign
+                    # Splits only if file is not present:
+                    if not os.path.isfile(tgt_filepath):
+                        self.split_video(src_filepath, tgt_filepath,
+                                        sign, start, end,
+                                        self.fps_in, self.fps_out)
+
+                        # File x label mapping:
+                        files_labels[tgt_filename] = sign
+
+                    # Save file name for skipping in the future:
+                    files_splitted.add(tgt_filename)
 
                     # Verify debug option:
                     if self.arg.debug:
-                        if len(files_labels) >= self.arg.debug_opts['split_items']:
+                        if len(files_splitted) >= self.arg.debug_opts['split_items']:
                             break
+                
         return labels, files_labels
 
     def split_video(self, input_file, output_file,
@@ -117,17 +126,14 @@ class Splitter_Preprocessor(Preprocessor):
         files_labels_file = "{}/file_label.txt".format(output_dir)
         self.save_map(files_labels, files_labels_file)
 
-    def create_filename(self, sign, output_dir):
+    def create_filename(self, sign, current_files):
         idx = 0
         filename = None
-        filepath = None
 
-        while (not filepath) or os.path.isfile(filepath):
+        while (not filename) or (filename in current_files):
             idx += 1
             filename = "{!s}-{:03d}.mov".format(sign, idx)
-            filepath = '{}/{}'.format(output_dir, filename)
-
-        return filename, filepath
+        return filename
 
     def frame_to_sec(self, frame, fps):
         res = frame / fps
