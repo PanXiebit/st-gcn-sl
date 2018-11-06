@@ -46,21 +46,20 @@ class OpenPose_Preprocessor(Preprocessor):
                        file_label, label_name, label_map_path):
         # label info:
         label_map = self.load_label_map(label_map_path)
-        idx = 0
         total = len(file_label)
 
         for video, label in file_label.items():
             video_path = '{}/{}'.format(input_dir, video)
-
+    
             if os.path.isfile(video_path):
                 label_idx = label_name.index(label)
-                idx += 1
                 video_base_name = os.path.splitext(video)[0]
+                video_num = len(label_map) + 1
 
                 if video_base_name not in label_map:
                     try:
                         # pose estimation
-                        self.print_progress(idx, total, video)
+                        self.print_progress(video_num, total, video)
                         self.ensure_dir_exists(snippets_dir)
                         self.run_openpose(video_path, snippets_dir)
 
@@ -87,7 +86,7 @@ class OpenPose_Preprocessor(Preprocessor):
 
                 # Verify debug options:
                 if self.arg.debug:
-                    if idx >= self.arg.debug_opts['pose_items']:
+                    if video_num >= self.arg.debug_opts['pose_items']:
                         break
 
         return label_map
