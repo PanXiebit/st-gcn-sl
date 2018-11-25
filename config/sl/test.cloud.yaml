@@ -1,22 +1,22 @@
-weights: ./models/kinetics-st_gcn.pt
+weights: /media/sdb1/recognition/LAST/epoch630_model.pt
 
 # feeder
 feeder: feeder.feeder.Feeder
 test_feeder_args:
-  data_path: /home/cleison/Documentos/dataset/workdir/datagen/val_data.npy
-  label_path: /home/cleison/Documentos/dataset/workdir/datagen/val_label.pkl
+  data_path: /media/sdb1/dataset/preprocessing/test_data.npy
+  label_path: /media/sdb1/dataset/preprocessing/test_label.pkl
 
 # model
 model: net.st_gcn.Model
 model_args:
   in_channels: 3
-  num_class: 103 #400
+  num_class: 2745
   edge_importance_weighting: True
   graph_args:
-    layout: 'openpose-sl' #'openpose'
+    layout: 'openpose-sl' 
     strategy: 'spatial'
 
 # test 
 phase: test
 device: 0
-test_batch_size: 64
+test_batch_size: 32
