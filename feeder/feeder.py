@@ -66,6 +66,8 @@ class Feeder(torch.utils.data.Dataset):
             self.data = self.data[0:100]
             self.sample_name = self.sample_name[0:100]
 
+        print("[Feeder] Items loaded: {}".format(len(np.array(self.data))))
+
         self.N, self.C, self.T, self.V, self.M = self.data.shape
 
     def __len__(self):
