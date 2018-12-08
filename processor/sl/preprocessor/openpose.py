@@ -25,7 +25,7 @@ class OpenPose_Preprocessor(Preprocessor):
         output_dir = '{}/poses'.format(self.arg.work_dir)
         label_map_path = '{}/label.json'.format(output_dir)
         snippets_dir = '{}/snippets'.format(output_dir)
-        input_dir = '{}/splits'.format(self.arg.work_dir)
+        input_dir = '{}/segmented'.format(self.arg.work_dir)
         self.ensure_dir_exists(output_dir)
 
         file_label, label_name = self.load_label_info(input_dir)

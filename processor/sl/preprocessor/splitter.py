@@ -23,7 +23,7 @@ class Splitter_Preprocessor(Preprocessor):
 
     def start(self):
         input_dir = self.arg.input_dir
-        output_dir = '{}/splits'.format(self.arg.work_dir)
+        output_dir = '{}/segmented'.format(self.arg.work_dir)
         self.ensure_dir_exists(output_dir)
 
         # Load metadata:
