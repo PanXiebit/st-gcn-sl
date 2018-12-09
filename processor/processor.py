@@ -123,6 +123,7 @@ class Processor(IO):
                     self.io.print_log('Eval epoch: {}'.format(epoch))
                     self.test()
                     self.io.print_log('Done.')
+                    
         # test phase
         elif self.arg.phase == 'test':
 

@@ -6,11 +6,13 @@ train_feeder_args:
   random_choose: True
   random_move: True
   window_size: 126
-  data_path: /documents/dataset-20/preprocessing/train_data.npy 
-  label_path: /documents/dataset-20/preprocessing/train_label.pkl
+  data_path: /home/documents/dataset-20/preprocessing/train_data.npy 
+  label_path: /home/documents/dataset-20/preprocessing/train_label.pkl
 test_feeder_args:
-  data_path: /documents/dataset-20/preprocessing/val_data.npy
-  label_path: /documents/dataset-20/preprocessing/val_label.pkl
+  data_path: /home/documents/dataset-20/preprocessing/test_data.npy
+  label_path: /home/documents/dataset-20/preprocessing/test_label.pkl
+
+log_interval: 25
 
 # model
 model: net.st_gcn.Model
@@ -24,12 +26,12 @@ model_args:
 
 # training
 device: [0]
-batch_size: 16
-test_batch_size: 16
+batch_size: 24
+test_batch_size: 24
 
 #optim
 base_lr: 0.1
-step: [20, 30, 40, 50]
+step: [200, 300, 400, 500]
 num_epoch: 60
 
 

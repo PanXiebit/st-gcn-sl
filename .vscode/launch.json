@@ -87,9 +87,9 @@
             "args": [
                 "preprocessing",
                 "-c",
-                "config/sl/preproc.local.yaml",
-                "-d",
-                "true"
+                "config/sl/preproc-20.local.yaml",
+                // "-d",
+                // "true"
             ]
         },
         {

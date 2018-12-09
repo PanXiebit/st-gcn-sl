@@ -25,6 +25,11 @@ class Holdout_Preprocessor(Preprocessor):
         self.val_size = (self.arg.holdout['val'] / 100)
         self.train_size = 1 - (self.test_size + self.val_size)
 
+        if 'seed' in self.arg.holdout:
+            self.seed = self.arg.holdout['seed']
+        else:
+            self.seed = 1
+
     def start(self):
         # data_dir = '{}/data'.format(self.arg.input_dir)
         input_dir = '{}/poses'.format(self.arg.work_dir)
@@ -58,9 +63,9 @@ class Holdout_Preprocessor(Preprocessor):
 
     def holdout_data(self, X, y, test_size, val_size):
         X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=test_size, random_state=1)
+            X, y, test_size=test_size, random_state=self.seed)
         X_train, X_val, y_train, y_val = train_test_split(
-            X_train, y_train, test_size=val_size, random_state=1)
+            X_train, y_train, test_size=val_size, random_state=self.seed)
         return X_train, X_test, X_val, y_train, y_test, y_val
 
     def copy_items(self, part, percent, items, labels, input_dir, output_dir, data):

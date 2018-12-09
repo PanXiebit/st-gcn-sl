@@ -14,8 +14,9 @@ phases:
   gendata
 
 holdout:
-  test: 15
-  val: 15
+  test: 20
+  val: 0
+  seed: 5
 
 download:
   url: http://csr.bu.edu/ftp/asl/asllvd/asl-data2/quicktime
