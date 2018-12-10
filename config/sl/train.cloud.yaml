@@ -2,6 +2,8 @@ work_dir: /home/documents/recognition/LAST
 #start_epoch: 630
 #weights: /home/documents/recognition/LAST/epoch630_model.pt
 
+log_interval: 25
+
 # feeder
 feeder: feeder.feeder.Feeder
 train_feeder_args:
