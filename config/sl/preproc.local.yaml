@@ -1,6 +1,6 @@
 input_dir:  /home/cleison/Documentos/dataset/original
 work_dir:   /home/cleison/Documentos/dataset/workdir
-output_dir: /home/cleison/Documentos/dataset/preprocessing
+output_dir: /home/cleison/Documentos/dataset/preprocessed
 openpose:   /home/cleison/Documentos/OpenPose/openpose/build
 metadata_file:  /home/cleison/Documentos/dataset/dai-asllvd-BU_glossing_with_variations_HS_information-extended-urls-RU.xlsx
 clean_workdir: False
@@ -8,13 +8,14 @@ clean_workdir: False
 phases: 
   # download, 
   # split, 
-  pose, 
+  # pose, 
   holdout,
   gendata
 
 holdout:
-  test: 0
-  val: 40
+  test: 20
+  val: 0
+  seed: 1
 
 download:
   url: http://csr.bu.edu/ftp/asl/asllvd/asl-data2/quicktime
@@ -30,7 +31,7 @@ gendata:
   channels: 3
   num_person: 1
   repeat_frames: True
-  max_frames: 126
+  max_frames: 63
 
 
 debug_opts:
