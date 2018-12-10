@@ -1,4 +1,4 @@
-work_dir: /documents/recognition-20/LAST
+work_dir: /home/documents/recognition-20/LAST
 
 # feeder
 feeder: feeder.feeder.Feeder

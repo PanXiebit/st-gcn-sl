@@ -112,8 +112,6 @@ class Video_Preprocessor(IO):
                             help='clean working directory')
         parser.add_argument('-m', '--metadata_file', type=str, default=None,
                             help='metadata file')
-        parser.add_argument('-f', '--max_frames', type=int, default=None,
-                            help='maximum number of frames to consider')
         parser.add_argument('-op', '--openpose', type=str, default=None,
                             help='path to OpenPose')
 
