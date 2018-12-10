@@ -4,7 +4,6 @@ output_dir: /home/cleison/Documentos/dataset-tmp/preprocessing
 openpose:   /home/cleison/Documentos/OpenPose/openpose/build
 metadata_file:  /home/cleison/Documentos/dataset-tmp/dai-asllvd-20.xlsx
 clean_workdir: False
-max_frames: 130
 
 phases: 
   #download, 
@@ -31,7 +30,7 @@ gendata:
   channels: 3
   num_person: 1
   repeat_frames: True
-
+  max_frames: 130
 
 debug_opts:
   download_items: 5

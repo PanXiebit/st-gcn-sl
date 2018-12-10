@@ -1,10 +1,9 @@
 input_dir:  /home/cleison/Documentos/dataset-20/original
 work_dir:   /home/cleison/Documentos/dataset-20/workdir
-output_dir: /home/cleison/Documentos/dataset-20/preprocessing
+output_dir: /home/cleison/Documentos/dataset-20/preprocessed
 openpose:   /home/cleison/Documentos/OpenPose/openpose/build
 metadata_file:  /home/cleison/Documentos/dataset-20/dai-asllvd-20.xlsx
 clean_workdir: False
-max_frames: 130
 
 phases: 
   #download, 
@@ -16,7 +15,7 @@ phases:
 holdout:
   test: 20
   val: 0
-  seed: 5
+  seed: 1
 
 download:
   url: http://csr.bu.edu/ftp/asl/asllvd/asl-data2/quicktime
@@ -32,7 +31,7 @@ gendata:
   channels: 3
   num_person: 1
   repeat_frames: True
-
+  max_frames: 60
 
 debug_opts:
   download_items: 5

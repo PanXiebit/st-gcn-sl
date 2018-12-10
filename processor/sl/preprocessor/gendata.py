@@ -21,7 +21,7 @@ class Gendata_Preprocessor(Preprocessor):
         self.joints = self.arg.gendata['joints']
         self.channels = self.arg.gendata['channels']
         self.num_person = self.arg.gendata['num_person']
-        self.max_frames = self.arg.max_frames
+        self.max_frames = self.arg.gendata['max_frames']
         self.repeat_frames = self.arg.gendata['repeat_frames']
 
     def start(self):

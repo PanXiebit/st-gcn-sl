@@ -4,7 +4,6 @@ output_dir: /home/cleison/Documentos/dataset/preprocessing
 openpose:   /home/cleison/Documentos/OpenPose/openpose/build
 metadata_file:  /home/cleison/Documentos/dataset/dai-asllvd-BU_glossing_with_variations_HS_information-extended-urls-RU.xlsx
 clean_workdir: False
-max_frames: 126
 
 phases: 
   # download, 
@@ -31,6 +30,7 @@ gendata:
   channels: 3
   num_person: 1
   repeat_frames: True
+  max_frames: 126
 
 
 debug_opts:
