@@ -6,11 +6,11 @@ train_feeder_args:
   random_choose: True
   random_move: True
   window_size: 126
-  data_path: /home/documents/dataset-20/preprocessing/train_data.npy 
-  label_path: /home/documents/dataset-20/preprocessing/train_label.pkl
+  data_path: /home/documents/dataset-20/preprocessed/train_data.npy 
+  label_path: /home/documents/dataset-20/preprocessed/train_label.pkl
 test_feeder_args:
-  data_path: /home/documents/dataset-20/preprocessing/test_data.npy
-  label_path: /home/documents/dataset-20/preprocessing/test_label.pkl
+  data_path: /home/documents/dataset-20/preprocessed/test_data.npy
+  label_path: /home/documents/dataset-20/preprocessed/test_label.pkl
 
 log_interval: 25
 
