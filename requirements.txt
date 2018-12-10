@@ -5,3 +5,7 @@ h5py
 opencv-python
 imageio
 scikit-video
+pandas
+xlrd
+ffmpy
+sklearn
