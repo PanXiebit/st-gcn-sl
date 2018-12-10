@@ -5,7 +5,7 @@ feeder: feeder.feeder.Feeder
 train_feeder_args:
   random_choose: True
   random_move: True
-  window_size: 65
+  window_size: 63
   data_path:  /media/sdb1/dataset/preprocessing/train_data.npy
   label_path: /media/sdb1/dataset/preprocessing/train_label.pkl
 test_feeder_args:
