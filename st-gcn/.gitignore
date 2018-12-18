@@ -4,6 +4,7 @@ work_dir/*
 data/*
 config_v0/*
 backup/*
+.vscode
 model/*
 *.pt
 *.caffemodel
@@ -108,5 +109,3 @@ ENV/
 
 # mypy
 .mypy_cache/
-.vscode/settings.json
-wget-log
