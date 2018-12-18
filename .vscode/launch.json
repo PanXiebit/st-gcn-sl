@@ -93,6 +93,20 @@
             ]
         },
         {
+            "name": "Preprocessing 20",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "preprocessing",
+                "-c",
+                "config/sl/preproc-20.local.yaml",
+                // "-d",
+                // "true"
+            ]
+        },
+        {
             "name": "Train",
             "type": "python",
             "request": "launch",

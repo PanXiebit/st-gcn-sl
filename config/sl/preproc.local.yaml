@@ -13,7 +13,7 @@ phases:
   gendata
 
 holdout:
-  test: 20
+  test: 33
   val: 0
   seed: 1
 
