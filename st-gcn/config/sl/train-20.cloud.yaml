@@ -1,4 +1,4 @@
-work_dir: /home/documents/recognition-20/LAST
+work_dir: /home/documents/dataset-20-hand/recognition/LAST
 
 # feeder
 feeder: feeder.feeder.Feeder
@@ -6,11 +6,11 @@ train_feeder_args:
   random_choose: True
   random_move: True
   window_size: 60
-  data_path: /home/documents/dataset-20/preprocessed/train_data.npy 
-  label_path: /home/documents/dataset-20/preprocessed/train_label.pkl
+  data_path: /home/documents/dataset-20-hand/preprocessed/train_data.npy 
+  label_path: /home/documents/dataset-20-hand/preprocessed/train_label.pkl
 test_feeder_args:
-  data_path: /home/documents/dataset-20/preprocessed/test_data.npy
-  label_path: /home/documents/dataset-20/preprocessed/test_label.pkl
+  data_path: /home/documents/dataset-20-hand/preprocessed/test_data.npy
+  label_path: /home/documents/dataset-20-hand/preprocessed/test_label.pkl
 
 log_interval: 25
 
@@ -21,8 +21,23 @@ model_args:
   num_class: 20
   edge_importance_weighting: True
   graph_args:
-    layout: 'openpose-sl'
+    layout: 'custom'
     strategy: 'spatial'
+    custom_layout:
+      num_node: 49
+      center: 0
+      edge: (0, 1), (1, 2), (2, 3), 
+            (0, 4), (4, 5), (5, 6),
+            (7,  8), ( 8,  9), ( 9, 10), (10, 11), 
+            (7, 12), (12, 13), (13, 14), (14, 15),
+            (7, 16), (16, 17), (17, 18), (18, 19),
+            (7, 20), (20, 21), (21, 22), (22, 23),
+            (7, 24), (24, 25), (25, 26), (26, 27),
+            (28, 29), (29, 30), (30, 31), (31, 32),
+            (28, 33), (33, 34), (34, 35), (35, 36),
+            (28, 37), (37, 38), (38, 39), (39, 40),
+            (28, 41), (41, 42), (42, 43), (43, 44),
+            (28, 45), (45, 46), (46, 47), (47, 48)
 
 # training
 device: [0]
