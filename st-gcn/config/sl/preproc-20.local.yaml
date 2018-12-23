@@ -25,7 +25,7 @@ download:
 split:
   fps_in: 60
   fps_out: 30
-
+  
 gendata:
   joints: 130
   channels: 3

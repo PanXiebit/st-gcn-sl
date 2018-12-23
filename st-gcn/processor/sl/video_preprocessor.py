@@ -8,13 +8,8 @@ from torchlight import str2bool
 from torchlight import str2dict
 from tools.utils.parser import str2list
 
-from .preprocessor.downloader import Downloader_Preprocessor
-from .preprocessor.openpose import OpenPose_Preprocessor
-from .preprocessor.splitter import Splitter_Preprocessor
-from .preprocessor.holdout import Holdout_Preprocessor
-from .preprocessor.gendata import Gendata_Preprocessor
-
 from .preprocessor.io import IO
+from torchlight import import_class
 
 
 class Video_Preprocessor(IO):
@@ -53,23 +48,13 @@ class Video_Preprocessor(IO):
             self.remove_dir(workdir)
             self.create_dir(workdir)
 
-        # 1. download videos
-        # 2. split videos
-        # 3. estimate pose (openpose)
-        # 4. holdout
-        # 5. process data (python) (generate pkl)
-        pipeline = ['download', 'split', 'pose', 'holdout', 'gendata']
         phases = self.get_phases()
 
-        # Select phases:
-        if self.arg.phases:
-            pipeline = [x for x in pipeline if x in self.arg.phases]
-
         # Run pipeline:
-        for _, name in enumerate(pipeline):
-            phase = phases[name]
-            self.print_phase(name)
-            phase(self.arg).start()
+        for name, phase in phases.items():
+            if name in self.arg.phases:
+                self.print_phase(name)
+                phase(self.arg).start()
 
         # Remove workdir:
         # if self.arg.clean_workdir:
@@ -79,11 +64,18 @@ class Video_Preprocessor(IO):
 
     def get_phases(self):
         return dict(
-            download=Downloader_Preprocessor,
-            split=Splitter_Preprocessor,
-            pose=OpenPose_Preprocessor,
-            holdout=Holdout_Preprocessor,
-            gendata=Gendata_Preprocessor
+            download=import_class(
+                'processor.sl.preprocessor.downloader.Downloader_Preprocessor'),
+            split=import_class(
+                'processor.sl.preprocessor.splitter.Splitter_Preprocessor'),
+            pose=import_class(
+                'processor.sl.preprocessor.openpose.OpenPose_Preprocessor'),
+            keypoint=import_class(
+                'processor.sl.preprocessor.keypoint.Keypoint_Preprocessor'),
+            holdout=import_class(
+                'processor.sl.preprocessor.holdout.Holdout_Preprocessor'),
+            gendata=import_class(
+                'processor.sl.preprocessor.gendata.Gendata_Preprocessor')
         )
 
     def print_phase(self, name):
@@ -112,8 +104,6 @@ class Video_Preprocessor(IO):
                             help='clean working directory')
         parser.add_argument('-m', '--metadata_file', type=str, default=None,
                             help='metadata file')
-        parser.add_argument('-op', '--openpose', type=str, default=None,
-                            help='path to OpenPose')
 
         parser.add_argument('-d', '--debug',  type=str2bool, default=False,
                             help='debug flag')
@@ -124,6 +114,10 @@ class Video_Preprocessor(IO):
 
         parser.add_argument('-ph', '--phases', type=str2list, default=[],
                             help='phases of pipeline')
+        parser.add_argument('-po', '--pose', type=str2dict, default=dict(),
+                            help='poses configuration')
+        parser.add_argument('-kp', '--keypoint', type=str2dict, default=dict(),
+                            help='keypoint configuration')
         parser.add_argument('-ho', '--holdout', type=str2dict, default=dict(),
                             help='holdout configuration')
         parser.add_argument('-sp', '--split', type=str2dict, default=dict(),

@@ -16,16 +16,12 @@ class Splitter_Preprocessor(Preprocessor):
     """
 
     def __init__(self, argv=None):
-        super().__init__(argv)
+        super().__init__('split', argv)
         self.fps_in = self.arg.split['fps_in']
         self.fps_out = self.arg.split['fps_out']
-        self.max_frames = self.arg.max_frames
+        # self.max_frames = self.arg.split['max_frames']
 
     def start(self):
-        input_dir = self.arg.input_dir
-        output_dir = '{}/segmented'.format(self.arg.work_dir)
-        self.ensure_dir_exists(output_dir)
-
         # Load metadata:
         self.print_log("Loading metadata...")
         metadata = self.load_metadata(
@@ -35,14 +31,14 @@ class Splitter_Preprocessor(Preprocessor):
             self.print_log("Nothing to split.")
         else:
             # Split videos:
-            self.print_log("Source directory: '{}'".format(input_dir))
-            self.print_log("Splitting videos to '{}'...".format(output_dir))
+            self.print_log("Source directory: '{}'".format(self.input_dir))
+            self.print_log("Splitting videos to '{}'...".format(self.output_dir))
             labels, files_labels = self.split_videos(
-                metadata, input_dir, output_dir)
+                metadata, self.input_dir, self.output_dir)
 
             # Save labels:
             self.print_log("Saving labels...")
-            self.save_labels(output_dir, labels, files_labels)
+            self.save_labels(self.output_dir, labels, files_labels)
             self.print_log("Split finished.")
 
     def split_videos(self, metadata, input_dir, output_dir):
@@ -51,34 +47,36 @@ class Splitter_Preprocessor(Preprocessor):
         files_splitted = set()
 
         for row in metadata.itertuples():
-            src_filename = self.format_filename(row.Session, row.Scene)
-            src_filename = src_filename.replace('/', '_')
-            src_filepath = '{}/{}'.format(input_dir, src_filename)
-            sign = self.normalize(str(row.Main_New_Gloss_1)).lower()
-            tgt_filename = self.create_filename(sign, files_splitted)
-            tgt_filepath = '{}/{}'.format(output_dir, tgt_filename)
+            if row.Main_New_Gloss_1 and row.Session and row.Scene:
+                src_filename = self.format_filename(row.Session, row.Scene)
+                src_filename = src_filename.replace('/', '_')
+                src_filepath = '{}/{}'.format(input_dir, src_filename)
+                sign = self.normalize(str(row.Main_New_Gloss_1)).lower()
+                tgt_filename = self.create_filename(sign, files_splitted)
+                tgt_filepath = '{}/{}'.format(output_dir, tgt_filename)
 
-            if os.path.isfile(src_filepath):
-                start = row.Start
-                end = row.End
+                if os.path.isfile(src_filepath):
+                    start = row.Start
+                    end = row.End
 
-                # Verify max frames:
-                if self.max_frames and (end - start) > self.max_frames:
-                    self.print_file(tgt_filename, src_filename, start, end)
-                    self.print_log(" SKIP (exceeds max frames)")
+                    # Verify max frames:
+                    # if self.max_frames and (end - start) > self.max_frames:
+                    #     self.print_file(tgt_filename, src_filename, start, end)
+                    #     self.print_log(" SKIP (exceeds max frames)")
 
-                else:
+                    # else:
+
                     # Splits only if file is not present:
                     if not os.path.isfile(tgt_filepath):
                         tmp_filepath = '{}/{}'.format(tempfile.gettempdir(),
-                                          tgt_filename)
+                                                      tgt_filename)
 
                         # Split file in temporary diretory:
                         self.print_file(tgt_filename, src_filename, start, end)
                         self.split_video(src_filepath, tmp_filepath,
                                          sign, start, end,
                                          self.fps_in, self.fps_out)
-                        
+
                         # Save file to target directory:
                         shutil.move(tmp_filepath, tgt_filepath)
 

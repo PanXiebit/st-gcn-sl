@@ -41,3 +41,17 @@ def str2list(strlist):
     if not strlist:
         return []
     return re.split("[, ]+", strlist)
+
+
+def str2tuples(strlist, type=str):
+    """Convert (key1, key2), (key1, key2),... string into tuple list.
+    :param strlist: (key1, key2), (key1, key2),
+    :param type: type to convert items to (default 'str').
+    strlist can be comma or space separated.
+    """
+    if strlist is not None:
+        strlist = strlist.strip(', ')
+    if not strlist:
+        return []
+    tuples = re.findall('\((\d*)[, ]+(\d*)\)', strlist)
+    return [(type(x), type(y)) for (x, y) in tuples]

@@ -20,7 +20,7 @@ class Holdout_Preprocessor(Preprocessor):
     """
 
     def __init__(self, argv=None):
-        super().__init__(argv)
+        super().__init__('holdout', argv)
         self.test_size = (self.arg.holdout['test'] / 100)
         self.val_size = (self.arg.holdout['val'] / 100)
         self.train_size = 1 - (self.test_size + self.val_size)
@@ -31,20 +31,15 @@ class Holdout_Preprocessor(Preprocessor):
             self.seed = 1
 
     def start(self):
-        # data_dir = '{}/data'.format(self.arg.input_dir)
-        input_dir = '{}/poses'.format(self.arg.work_dir)
-        label_path = '{}/label.json'.format(input_dir)
-        output_dir = '{}/holdout'.format(self.arg.work_dir)
-
-        self.print_log("Source directory: {}".format(input_dir))
-        self.print_log("Holdout of data to '{}'...".format(output_dir))
+        label_path = '{}/label.json'.format(self.input_dir)
+        self.print_log("Source directory: {}".format(self.input_dir))
+        self.print_log("Holdout of data to '{}'...".format(self.output_dir))
 
         if not os.path.isfile(label_path):
             self.print_log("No data to holdout")
         else:
             # load labels for split:
-            with open(label_path, 'r') as fp:
-                labels = json.load(fp)
+            labels = self.read_json(label_path)
             X = [k for k in labels]
             y = [v['label'] for (k, v) in labels.items()]
 
@@ -54,11 +49,11 @@ class Holdout_Preprocessor(Preprocessor):
 
             # Copy items:
             self.copy_items('train', self.train_size, X_train, y_train,
-                            input_dir, output_dir, labels)
+                            self.input_dir, self.output_dir, labels)
             self.copy_items('test', self.test_size, X_test,
-                            y_test, input_dir, output_dir, labels)
+                            y_test, self.input_dir, self.output_dir, labels)
             self.copy_items('val', self.val_size, X_val, y_val,
-                            input_dir, output_dir, labels)
+                            self.input_dir, self.output_dir, labels)
             self.print_log("Holdout complete.")
 
     def holdout_data(self, X, y, test_size, val_size):
@@ -70,6 +65,7 @@ class Holdout_Preprocessor(Preprocessor):
 
     def copy_items(self, part, percent, items, labels, input_dir, output_dir, data):
         if items:
+            self.print_log()
             self.print_log(
                 "Saving '{}' data ({:.0%})...".format(part, percent))
             items_dir = '{}/{}'.format(output_dir, part)

@@ -1,0 +1,32 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Preprocessing (20 Hand)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/st-gcn/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "preprocessing",
+                "-c",
+                "${workspaceFolder}/st-gcn/config/sl/preproc-20-hand.local.yaml"
+            ]
+        },
+        {
+            "name": "Train",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/st-gcn/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "recognition",
+                "-c",
+                "${workspaceFolder}/st-gcn/config/sl/train-20.local.yaml"
+            ]
+        }
+    ]
+}
