@@ -27,6 +27,17 @@
                 "-c",
                 "${workspaceFolder}/st-gcn/config/sl/train-20.local.yaml"
             ]
+        },
+        {
+            "name": "Log reader",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/log-reader/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-f", "${workspaceFolder}/log-reader/log.txt",
+                "-o", "${workspaceFolder}/log-reader/output.csv"
+            ]
         }
     ]
 }
