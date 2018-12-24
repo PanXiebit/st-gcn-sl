@@ -25,7 +25,9 @@
             "args": [
                 "recognition",
                 "-c",
-                "${workspaceFolder}/st-gcn/config/sl/train-20.local.yaml"
+                "${workspaceFolder}/st-gcn/config/sl/train.grp5.yaml",
+                "--work_dir",
+                "/home/cleison/Documents/dataset-20-hand/recognition/LAST"
             ]
         },
         {

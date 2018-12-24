@@ -54,4 +54,8 @@ def str2tuples(strlist, type=str):
     if not strlist:
         return []
     tuples = re.findall('\((\d*)[, ]+(\d*)\)', strlist)
-    return [(type(x), type(y)) for (x, y) in tuples]
+    tuples = [(type(x), type(y)) for (x, y) in tuples]
+
+    if not (strlist.count('(') == strlist.count(')') == len(tuples)):
+        raise ValueError("There was an error while reading tuples string")
+    return tuples

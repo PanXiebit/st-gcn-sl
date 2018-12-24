@@ -6,11 +6,11 @@ train_feeder_args:
   random_choose: True
   random_move: True
   window_size: 60
-  data_path: /home/student/dl2/grp5/cca5/dataset-20-hand/preprocessed/train_data.npy 
-  label_path: /home/student/dl2/grp5/cca5/dataset-20-hand/preprocessed/train_label.pkl
+  data_path: ../../preprocessed/train_data.npy 
+  label_path: ../../preprocessed/train_label.pkl
 test_feeder_args:
-  data_path: /home/student/dl2/grp5/cca5/dataset-20-hand/preprocessed/test_data.npy
-  label_path: /home/student/dl2/grp5/cca5/dataset-20-hand/preprocessed/test_label.pkl
+  data_path: ../../preprocessed/test_data.npy
+  label_path: ../../preprocessed/test_label.pkl
 
 log_interval: 25
 
