@@ -1,42 +1,59 @@
-input_dir:  /home/cleison/Documentos/dataset/original
-work_dir:   /home/cleison/Documentos/dataset/workdir
-output_dir: /home/cleison/Documentos/dataset/preprocessed
-openpose:   /home/cleison/Documentos/OpenPose/openpose/build
-metadata_file:  /home/cleison/Documentos/dataset/dai-asllvd-BU_glossing_with_variations_HS_information-extended-urls-RU.xlsx
+work_dir:   /home/cleison/Documentos/dataset-20-hand/workdir
+metadata_file:  /home/cleison/Documentos/dataset-20-hand/dai-asllvd-20-hand.xlsx
 clean_workdir: False
 
 phases: 
   # download, 
   # split, 
   # pose, 
+  keypoint,
   holdout,
   gendata
 
-holdout:
-  test: 33
-  val: 0
-  seed: 1
-
 download:
+  output_dir: ../../original
   url: http://csr.bu.edu/ftp/asl/asllvd/asl-data2/quicktime
   file_pattern: '{session}/scene{scene}-camera{camera}.mov'
   metadata_url: http://www.bu.edu/asllrp/dai-asllvd-BU_glossing_with_variations_HS_information-extended-urls-RU.xlsx
 
 split:
+  input_dir: ../../original
+  output_dir: segmented
   fps_in: 60
   fps_out: 30
 
+pose:
+  openpose:   /home/cleison/Documentos/OpenPose/openpose/build
+  input_dir: ./segmented
+  output_dir: ./poses
+  model_path: ./st-gcn/models
+
+keypoint:
+  input_dir: ./poses
+  output_dir: ./keypoints
+  points: 1 .. 7,
+          88 .. 108,
+          109 .. 129 
+
+holdout:
+  input_dir: ./keypoints
+  output_dir: ./holdout
+  test: 33
+  val: 0
+  seed: 2
+
 gendata:
-  joints: 130
+  input_dir: ./holdout
+  output_dir: ../preprocessed
+  joints: 49
   channels: 3
   num_person: 1
   repeat_frames: True
-  max_frames: 63
-
+  max_frames: 60
 
 debug_opts:
-  download_items: 10
-  split_items: 100
-  pose_items: 100
-  gendata_items: 100
-  gendata_joints: 18
+  download_items: 5
+  split_items: 5
+  pose_items: 5
+  gendata_items: 5
+  gendata_joints: 42
