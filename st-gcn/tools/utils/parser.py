@@ -53,7 +53,8 @@ def str2tuples(strlist, type=str):
         strlist = strlist.strip(', ')
     if not strlist:
         return []
-    tuples = re.findall('\((\d*)[, ]+(\d*)\)', strlist)
+    
+    tuples = re.findall(r'\([ ]?(\d*)[, ]+(\d*)[ ]?\)', strlist)
     tuples = [(type(x), type(y)) for (x, y) in tuples]
 
     if not (strlist.count('(') == strlist.count(')') == len(tuples)):
