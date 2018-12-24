@@ -53,5 +53,5 @@ def str2tuples(strlist, type=str):
         strlist = strlist.strip(', ')
     if not strlist:
         return []
-    tuples = re.findall('\((\d*)[, ]+(\d*)\)', strlist)
+    tuples = re.findall('\([ ]?(\d*)[, ]+(\d*)[ ]?\)', strlist)
     return [(type(x), type(y)) for (x, y) in tuples]
