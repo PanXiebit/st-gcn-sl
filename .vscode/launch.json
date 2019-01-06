@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Preprocessing (20 Hand)",
+            "name": "Preprocessing (Hand 27)",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/st-gcn/main.py",
