@@ -1,0 +1,3 @@
+scp -r -P 30437 grp5@200.133.5.120:/home/student/dl2/grp5/cca5/dataset-20-hand/recognition/%1/log.txt "C:/Users/cleison.c.amorim/Dropbox/Private/UFPE/Mestrado/Disciplinas/IN1164 - Aprendizagem Profunda/Projeto/analise-resultados/asllvd-20-hand-27/%1.txt"
+
+python log-reader/main.py -f "C:/Users/cleison.c.amorim/Dropbox/Private/UFPE/Mestrado/Disciplinas/IN1164 - Aprendizagem Profunda/Projeto/analise-resultados/asllvd-20-hand-27/%1.txt" -o "C:/Users/cleison.c.amorim/Dropbox/Private/UFPE/Mestrado/Disciplinas/IN1164 - Aprendizagem Profunda/Projeto/analise-resultados/asllvd-20-hand-27/%1.csv"
