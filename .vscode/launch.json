@@ -13,7 +13,7 @@
             "args": [
                 "preprocessing",
                 "-c",
-                "${workspaceFolder}/st-gcn/config/sl/preproc.27.local.yaml"
+                "${workspaceFolder}/st-gcn/config/sl/preproc.27.local.win.yaml"
             ]
         },
         {

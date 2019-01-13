@@ -51,34 +51,6 @@ class Graph():
             self.edge = self_link + neighbor_link
             self.center = 1
 
-        elif layout == 'openpose-sl':
-            self.num_node = 130
-            self_link = [(i, i) for i in range(self.num_node)]
-
-            # Points 0 to 17:
-            pose_link = op.POSE_LINKS
-
-            # Points 18 to 87:
-            face_link = op.FACE_LINKS
-            face_link = self.shift_values(face_link, 18)
-            face_link.append((0, 48)) # link between pose and head (nose)
-            face_link.append((14, 55)) # link between pose and head (right eye)
-            face_link.append((15, 62)) # link between pose and head (left eye)
-
-            # Points 88 to 108:
-            hand_left_link = op.HAND_LINKS
-            hand_left_link = self.shift_values(hand_left_link, 88)
-            hand_left_link.append((7, 88)) # link between pose and hand left
-
-            # Points 109 to 129:
-            hand_right_link = op.HAND_LINKS
-            hand_right_link = self.shift_values(hand_right_link, 109)
-            hand_right_link.append((4, 109))  # link between pose and hand right
-
-            neighbor_link = pose_link + face_link + hand_left_link + hand_right_link
-            self.edge = self_link + neighbor_link
-            self.center = 1
-
         elif layout == 'ntu-rgb+d':
             self.num_node = 25
             self_link = [(i, i) for i in range(self.num_node)]
