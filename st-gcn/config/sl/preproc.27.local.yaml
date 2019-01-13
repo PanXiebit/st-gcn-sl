@@ -1,5 +1,5 @@
-work_dir:   /home/cleison/Documentos/dataset-20-hand/workdir
-metadata_file:  /home/cleison/Documentos/dataset-20-hand/dai-asllvd-20-hand.xlsx
+work_dir:   /home/cleison/Documentos/dataset-hand-27/workdir
+metadata_file:  /home/cleison/Documentos/dataset-hand-27/dai-asllvd-20-hand.xlsx
 clean_workdir: False
 
 phases: 
@@ -38,7 +38,7 @@ keypoint:
 holdout:
   input_dir: ./keypoints
   output_dir: ./holdout
-  test: 33
+  test: 20
   val: 0
   seed: 2
 
@@ -49,7 +49,7 @@ gendata:
   channels: 3
   num_person: 1
   repeat_frames: True
-  max_frames: 60
+  max_frames: 63
 
 debug_opts:
   download_items: 5
