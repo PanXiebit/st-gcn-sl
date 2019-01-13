@@ -58,7 +58,7 @@ class IO:
             json.dump(data, f)
 
     def read_json(self, path):
-        with open(path) as f:
+        with open(path, 'r') as f:
             return json.load(f)
 
     def create_command_line(self, command, args):
@@ -67,5 +67,5 @@ class IO:
                                   for k, v in args.items()])
         return command_line
 
-    def print_log(self, log):
+    def print_log(self, log=''):
         self.io.print_log(log)

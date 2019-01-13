@@ -1,5 +1,6 @@
 import numpy as np
 import tools.utils.openpose as op
+import tools.utils.parser as p
 
 class Graph():
     """ The Graph to model the skeletons extracted by the openpose
@@ -27,11 +28,12 @@ class Graph():
                  layout='openpose',
                  strategy='uniform',
                  max_hop=1,
-                 dilation=1):
+                 dilation=1,
+                 custom_layout=None):
         self.max_hop = max_hop
         self.dilation = dilation
 
-        self.get_edge(layout)
+        self.get_edge(layout, custom_layout)
         self.hop_dis = get_hop_distance(
             self.num_node, self.edge, max_hop=max_hop)
         self.get_adjacency(strategy)
@@ -39,42 +41,13 @@ class Graph():
     def __str__(self):
         return self.A
 
-    def get_edge(self, layout):
+    def get_edge(self, layout, custom_layout):
         if layout == 'openpose':
             self.num_node = 18
             self_link = [(i, i) for i in range(self.num_node)]
-            neighbor_link = [(4, 3), (3, 2), (7, 6), (6, 5), (13, 12), (12,
-                                                                        11),
+            neighbor_link = [(4, 3), (3, 2), (7, 6), (6, 5), (13, 12), (12, 11),
                              (10, 9), (9, 8), (11, 5), (8, 2), (5, 1), (2, 1),
                              (0, 1), (15, 0), (14, 0), (17, 15), (16, 14)]
-            self.edge = self_link + neighbor_link
-            self.center = 1
-
-        elif layout == 'openpose-sl':
-            self.num_node = 130
-            self_link = [(i, i) for i in range(self.num_node)]
-
-            # Points 0 to 17:
-            pose_link = op.POSE_LINKS
-
-            # Points 18 to 87:
-            face_link = op.FACE_LINKS
-            face_link = self.shift_values(face_link, 18)
-            face_link.append((0, 48)) # link between pose and head (nose)
-            face_link.append((14, 55)) # link between pose and head (right eye)
-            face_link.append((15, 62)) # link between pose and head (left eye)
-
-            # Points 88 to 108:
-            hand_left_link = op.HAND_LINKS
-            hand_left_link = self.shift_values(hand_left_link, 88)
-            hand_left_link.append((7, 88)) # link between pose and hand left
-
-            # Points 109 to 129:
-            hand_right_link = op.HAND_LINKS
-            hand_right_link = self.shift_values(hand_right_link, 109)
-            hand_right_link.append((4, 109))  # link between pose and hand right
-
-            neighbor_link = pose_link + face_link + hand_left_link + hand_right_link
             self.edge = self_link + neighbor_link
             self.center = 1
 
@@ -89,6 +62,7 @@ class Graph():
             neighbor_link = [(i - 1, j - 1) for (i, j) in neighbor_1base]
             self.edge = self_link + neighbor_link
             self.center = 21 - 1
+
         elif layout == 'ntu_edge':
             self.num_node = 24
             self_link = [(i, i) for i in range(self.num_node)]
@@ -100,8 +74,17 @@ class Graph():
             neighbor_link = [(i - 1, j - 1) for (i, j) in neighbor_1base]
             self.edge = self_link + neighbor_link
             self.center = 2
-        # elif layout=='customer settings'
-        #     pass
+
+        elif layout=='custom':
+            if not custom_layout:
+                raise ValueError("Custom layout must be defined.")    
+            else:
+                self.num_node = custom_layout['num_node']
+                neighbor_link = p.str2tuples(custom_layout['edge'], int)
+                self_link = [(i, i) for i in range(self.num_node)]
+                self.edge = self_link + neighbor_link
+                self.center = custom_layout['center']
+                
         else:
             raise ValueError("Do Not Exist This Layout.")
 

@@ -1,8 +1,11 @@
 from pathlib import Path
 import json
 
-PARTS = ['pose_keypoints_2d', 'face_keypoints_2d',
-         'hand_left_keypoints_2d', 'hand_right_keypoints_2d']
+
+PARTS_2D = ['pose_keypoints_2d',
+            'face_keypoints_2d',
+            'hand_left_keypoints_2d',
+            'hand_right_keypoints_2d']
 
 POSE_LINKS = [(4, 3), (3, 2), (7, 6), (6, 5), (13, 12), (12, 11),
               (10, 9), (9, 8), (11, 5), (8, 2), (5, 1), (2, 1),
@@ -31,7 +34,8 @@ HAND_LINKS = [(0, 1), (1, 2), (2, 3), (3, 4),
               (0, 17), (17, 18), (18, 19), (19, 20)]
 
 
-def json_pack(snippets_dir, video_name, frame_width, frame_height, label='unknown', label_index=-1):
+def json_pack(snippets_dir, video_name, frame_width, frame_height, label='unknown',
+              label_index=-1):
     sequence_info = []
     p = Path(snippets_dir)
 
@@ -48,7 +52,7 @@ def json_pack(snippets_dir, video_name, frame_width, frame_height, label='unknow
             skeleton['pose'] = []
             skeleton['score'] = []
 
-            for part_name in PARTS:
+            for part_name in PARTS_2D:
                 score, coordinates = read_coordinates(
                     part_name, person, frame_width, frame_height)
                 skeleton['pose'] += coordinates
@@ -63,7 +67,6 @@ def json_pack(snippets_dir, video_name, frame_width, frame_height, label='unknow
     video_info['label'] = label
     video_info['label_index'] = label_index
     return video_info
-
 
 def read_coordinates(part_name, person, frame_width, frame_height):
     score, coordinates = [], []

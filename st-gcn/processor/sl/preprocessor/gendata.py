@@ -17,7 +17,7 @@ class Gendata_Preprocessor(Preprocessor):
     """
 
     def __init__(self, argv=None):
-        super().__init__(argv)
+        super().__init__('gendata', argv)
         self.joints = self.arg.gendata['joints']
         self.channels = self.arg.gendata['channels']
         self.num_person = self.arg.gendata['num_person']
@@ -25,12 +25,8 @@ class Gendata_Preprocessor(Preprocessor):
         self.repeat_frames = self.arg.gendata['repeat_frames']
 
     def start(self):
-        input_dir = '{}/holdout'.format(self.arg.work_dir)
-        output_dir = '{}'.format(self.arg.output_dir)
-        self.ensure_dir_exists(output_dir)
-
-        self.print_log("Source directory: {}".format(input_dir))
-        self.print_log("Generating data to '{}'...".format(output_dir))
+        self.print_log("Source directory: {}".format(self.input_dir))
+        self.print_log("Generating data to '{}'...".format(self.output_dir))
 
         parts = ['train', 'test', 'val']
         joints = self.joints
@@ -41,10 +37,10 @@ class Gendata_Preprocessor(Preprocessor):
             joints = self.arg.debug_opts['gendata_joints']
 
         for part in parts:
-            data_path = '{}/{}'.format(input_dir, part)
-            label_path = '{}/{}_label.json'.format(input_dir, part)
-            data_out_path = '{}/{}_data.npy'.format(output_dir, part)
-            label_out_path = '{}/{}_label.pkl'.format(output_dir, part)
+            data_path = '{}/{}'.format(self.input_dir, part)
+            label_path = '{}/{}_label.json'.format(self.input_dir, part)
+            data_out_path = '{}/{}_data.npy'.format(self.output_dir, part)
+            label_out_path = '{}/{}_label.pkl'.format(self.output_dir, part)
             debug = self.arg.debug
 
             self.print_log("Generating '{}' data...".format(part))

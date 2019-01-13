@@ -13,30 +13,26 @@ class OpenPose_Preprocessor(Preprocessor):
         Preprocessor form pose estimation with OpenPose
     """
 
-    def __init__(self, argv=None):
-        super().__init__(argv)
-        self.openpose = '{}/examples/openpose/openpose.bin'.format(
-            self.arg.openpose)
+    OPENPOSE_PATH = '{}/examples/openpose/openpose.bin'
+    MODEL_PATH = './st-gcn/models'
 
-        if not os.path.isfile(self.openpose):
-            raise ValueError('Path to OpenPose is not valid.')
+    def __init__(self, argv=None):
+        super().__init__('pose', argv)
+        self.openpose = self.get_openpose_path(self.arg)
+        self.model_path = self.get_model_path(self.arg)
 
     def start(self):
-        output_dir = '{}/poses'.format(self.arg.work_dir)
-        label_map_path = '{}/label.json'.format(output_dir)
-        snippets_dir = '{}/snippets'.format(output_dir)
-        input_dir = '{}/segmented'.format(self.arg.work_dir)
-        self.ensure_dir_exists(output_dir)
-
-        file_label, label_name = self.load_label_info(input_dir)
+        label_map_path = '{}/label.json'.format(self.output_dir)
+        snippets_dir = '{}/snippets'.format(self.output_dir)
+        file_label, label_name = self.load_label_info(self.input_dir)
 
         if not file_label:
             self.print_log("Nothing to esimate.")
         else:
             # video processing:
-            self.print_log("Source directory: '{}'".format(input_dir))
-            self.print_log("Estimating poses to '{}'...".format(output_dir))
-            self.process_videos(input_dir, snippets_dir, output_dir,
+            self.print_log("Source directory: '{}'".format(self.input_dir))
+            self.print_log("Estimating poses to '{}'...".format(self.output_dir))
+            self.process_videos(self.input_dir, snippets_dir, self.output_dir,
                                 file_label, label_name, label_map_path)
 
             # save label map
@@ -50,7 +46,7 @@ class OpenPose_Preprocessor(Preprocessor):
 
         for video, label in file_label.items():
             video_path = '{}/{}'.format(input_dir, video)
-    
+
             if os.path.isfile(video_path):
                 label_idx = label_name.index(label)
                 video_base_name = os.path.splitext(video)[0]
@@ -129,12 +125,13 @@ class OpenPose_Preprocessor(Preprocessor):
             '--write_json': snippets_dir,
             '--display': 0,
             '--render_pose': 0,
-            '--model_pose': 'COCO'
+            '--model_pose': 'COCO',
+            '--model_folder': self.model_path
         }
 
         if not self.arg.debug:
-            args['--hand'] = ''
             args['--face'] = ''
+            args['--hand'] = ''
 
         command_line = self.create_command_line(command, args)
         FNULL = open(os.devnull, 'w')
@@ -143,3 +140,28 @@ class OpenPose_Preprocessor(Preprocessor):
 
     def print_progress(self, current, total, video):
         self.print_log("* [{} / {}] \t{} ...".format(current, total, video))
+
+    def get_openpose_path(self, arg):
+        openpose_path = self.OPENPOSE_PATH.format(
+            arg.pose['openpose'])
+        openpose_path = os.path.realpath(openpose_path)
+
+        if not os.path.isfile(openpose_path):
+            raise ValueError('Path to OpenPose is not valid.')
+            
+        return openpose_path
+
+    def get_model_path(self, arg):
+        model_path = None
+
+        if 'model_path' in arg.pose:
+            model_path = arg.pose['model_path']
+        else:
+            model_path = self.MODEL_PATH
+
+        model_path = os.path.realpath(model_path)
+
+        if not os.path.isdir(model_path):
+            raise ValueError('Path to OpenPose model is not valid.')
+
+        return model_path
