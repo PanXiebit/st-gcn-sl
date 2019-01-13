@@ -5,7 +5,7 @@ feeder: feeder.feeder.Feeder
 train_feeder_args:
   random_choose: True
   random_move: False
-  window_size: 63
+  window_size: 60
   data_path: /home/student/dl2/grp5/cca5/dataset/preprocessed/train_data.npy 
   label_path: /home/student/dl2/grp5/cca5/dataset/preprocessed/train_label.pkl
 test_feeder_args:
@@ -18,8 +18,8 @@ log_interval: 25
 model: net.st_gcn.Model
 model_args:
   in_channels: 3
-  num_class: 2745
-  edge_importance_weighting: False
+  num_class: 20
+  edge_importance_weighting: True
   graph_args:
     layout: 'custom'
     strategy: 'spatial'
@@ -41,8 +41,8 @@ model_args:
 
 # training
 device: [0]
-batch_size: 16
-test_batch_size: 16
+batch_size: 8
+test_batch_size: 8
 
 #optim
 optimizer: SGD
