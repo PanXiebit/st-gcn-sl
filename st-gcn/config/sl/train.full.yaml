@@ -19,7 +19,7 @@ model: net.st_gcn.Model
 model_args:
   in_channels: 3
   num_class: 2745
-  edge_importance_weighting: False
+  edge_importance_weighting: True
   graph_args:
     layout: 'custom'
     strategy: 'spatial'

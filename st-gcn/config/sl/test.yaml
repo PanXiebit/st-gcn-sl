@@ -1,0 +1,37 @@
+weights: /home/student/dl2/grp5/cca5/dataset/recognition/LAST
+
+# feeder
+feeder: feeder.feeder.Feeder
+test_feeder_args:
+  data_path: /home/student/dl2/grp5/cca5/dataset/workdir/datagen/val_data.npy
+  label_path: /home/student/dl2/grp5/cca5/dataset/workdir/datagen/val_label.pkl
+
+# model
+model: net.st_gcn.Model
+model_args:
+  in_channels: 3
+  num_class: 20
+  edge_importance_weighting: True
+  graph_args:
+    layout: 'custom'
+    strategy: 'spatial'
+    custom_layout:
+      num_node: 27
+      center: 0
+      edge: (0, 1), (1, 2), (2, 12) 
+            (0, 3), (3, 4), (4, 5),
+            (5, 6), (6, 7),
+            (5, 8), (8, 9),
+            (5, 10), (10, 11),
+            (5, 12), (12, 13),
+            (5, 14), (14, 15),
+            (12, 13), (13, 14),
+            (12, 15), (15, 16),
+            (12, 17), (17, 18),
+            (12, 19), (19, 20),
+            (12, 21), (21, 22)
+
+# test 
+phase: test
+device: 0
+test_batch_size: 8
