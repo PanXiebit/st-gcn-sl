@@ -17,7 +17,7 @@ class Gendata_Preprocessor(Preprocessor):
     """
 
     def __init__(self, argv=None):
-        super().__init__('gendata', argv)
+        super().__init__('normalize', argv)
         self.joints = self.arg.gendata['joints']
         self.channels = self.arg.gendata['channels']
         self.num_person = self.arg.gendata['num_person']

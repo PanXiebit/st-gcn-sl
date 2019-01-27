@@ -20,7 +20,7 @@ class Holdout_Preprocessor(Preprocessor):
     """
 
     def __init__(self, argv=None):
-        super().__init__('holdout', argv)
+        super().__init__('split', argv)
         self.test_size = (self.arg.holdout['test'] / 100)
         self.val_size = (self.arg.holdout['val'] / 100)
         self.train_size = 1 - (self.test_size + self.val_size)

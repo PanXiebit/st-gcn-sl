@@ -16,7 +16,7 @@ class Keypoint_Preprocessor(Preprocessor):
     RANGE_SEPARATOR = '..'
 
     def __init__(self, argv=None):
-        super().__init__('keypoint', argv)
+        super().__init__('filter', argv)
         self.keypoints = self.__get_keypoints(self.arg)
 
     def start(self):

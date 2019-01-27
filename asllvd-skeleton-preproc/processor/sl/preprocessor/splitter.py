@@ -5,8 +5,6 @@ import tempfile
 
 import ffmpy
 
-from processor.io import IO
-
 from .preprocessor import Preprocessor
 
 
@@ -16,7 +14,7 @@ class Splitter_Preprocessor(Preprocessor):
     """
 
     def __init__(self, argv=None):
-        super().__init__('split', argv)
+        super().__init__('segment', argv)
         self.fps_in = self.arg.split['fps_in']
         self.fps_out = self.arg.split['fps_out']
         # self.max_frames = self.arg.split['max_frames']

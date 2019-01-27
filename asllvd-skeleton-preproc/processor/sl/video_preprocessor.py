@@ -3,7 +3,6 @@ import os
 import shutil
 import yaml
 
-from processor.io import IO
 from torchlight import str2bool
 from torchlight import str2dict
 from tools.utils.parser import str2list
@@ -66,15 +65,15 @@ class Video_Preprocessor(IO):
         return dict(
             download=import_class(
                 'processor.sl.preprocessor.downloader.Downloader_Preprocessor'),
-            split=import_class(
+            segment=import_class(
                 'processor.sl.preprocessor.splitter.Splitter_Preprocessor'),
-            pose=import_class(
+            skeleton=import_class(
                 'processor.sl.preprocessor.openpose.OpenPose_Preprocessor'),
-            keypoint=import_class(
+            filter=import_class(
                 'processor.sl.preprocessor.keypoint.Keypoint_Preprocessor'),
-            holdout=import_class(
+            split=import_class(
                 'processor.sl.preprocessor.holdout.Holdout_Preprocessor'),
-            gendata=import_class(
+            normalize=import_class(
                 'processor.sl.preprocessor.gendata.Gendata_Preprocessor')
         )
 
@@ -114,17 +113,17 @@ class Video_Preprocessor(IO):
 
         parser.add_argument('-ph', '--phases', type=str2list, default=[],
                             help='phases of pipeline')
-        parser.add_argument('-po', '--pose', type=str2dict, default=dict(),
+        parser.add_argument('-sk', '--skeleton', type=str2dict, default=dict(),
                             help='poses configuration')
-        parser.add_argument('-kp', '--keypoint', type=str2dict, default=dict(),
+        parser.add_argument('-fi', '--filter', type=str2dict, default=dict(),
                             help='keypoint configuration')
-        parser.add_argument('-ho', '--holdout', type=str2dict, default=dict(),
-                            help='holdout configuration')
         parser.add_argument('-sp', '--split', type=str2dict, default=dict(),
+                            help='holdout configuration')
+        parser.add_argument('-sg', '--segment', type=str2dict, default=dict(),
                             help='split configuration')
         parser.add_argument('-dl', '--download', type=str2dict, default=dict(),
                             help='download configuration')
-        parser.add_argument('-gd', '--gendata', type=str2dict, default=dict(),
+        parser.add_argument('-no', '--normalize', type=str2dict, default=dict(),
                             help='data generation configuration')
 
         parser.add_argument('-do', '--debug_opts', type=str2dict,

@@ -5,15 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Preprocessing (Hand 27)",
+            "name": "Preprocessing (27 keypoints)",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/st-gcn/main.py",
+            "program": "${workspaceFolder}/asllvd-skeleton-preproc/main.py",
             "console": "integratedTerminal",
             "args": [
                 "preprocessing",
                 "-c",
-                "${workspaceFolder}/st-gcn/config/sl/preproc.27.local.win.yaml"
+                "${workspaceFolder}/asllvd-skeleton-preproc/config/preproc.27.local.win.yaml"
             ]
         },
         {

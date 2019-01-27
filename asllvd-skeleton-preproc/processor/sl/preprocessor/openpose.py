@@ -17,7 +17,7 @@ class OpenPose_Preprocessor(Preprocessor):
     MODEL_PATH = './st-gcn/models'
 
     def __init__(self, argv=None):
-        super().__init__('pose', argv)
+        super().__init__('skeleton', argv)
         self.openpose = self.get_openpose_path(self.arg)
         self.model_path = self.get_model_path(self.arg)
 
