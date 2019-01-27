@@ -1,4 +1,4 @@
-# Log Reader for Spatial Temporal Graph Convolutional Networks (for Sign Language 
+# Log Reader for Spatial Temporal Graph Convolutional Networks for Sign Language (ST-GCN-SL) Recognition
 
 This is an auxiliary project to read the ST-GCN logs and convert it to CSV. To perform the conversion run the following command
 
