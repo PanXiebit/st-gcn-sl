@@ -1,4 +1,4 @@
-# ASLLVD-Skeleton Dataset Preprocessing
+# Configuration file
 
 This is an example of a configuration file for preprocessing
 

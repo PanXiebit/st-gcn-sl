@@ -29,6 +29,13 @@ The training results, configurations and logging files, will be saved under the 
 You can modify the preprocessing parameters in the command line or configuration files. The order of priority is:  command line > config file > default parameter. For more information, use ```main.py -h```.
 
 
+## Configuration
+
+Details on how to configure preprocessing can be obtained below.
+
+[config/](config/)
+
+
 ## Citation
 Please cite the following paper if you use this repository in your reseach.
 ```
