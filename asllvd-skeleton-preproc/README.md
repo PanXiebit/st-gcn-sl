@@ -2,7 +2,7 @@
 
 This project aims to process the ASLLVD database to create the **ASLLVD-Skeleton** database. For details on the database and processing steps, check the links below.
 
-[[ST-GCN for Sign Language Paper]](http://www.cin.ufpe.br/~cca5/st-gcn-sl-paper/)
+[[ST-GCN for Sign Language Paper]](http://www.cin.ufpe.br/~cca5/st-gcn-sl/paper/)
 
 [[ASLLVD-Skeleton Website]](http://www.cin.ufpe.br/~cca5/asllvd-skeleton/)
 
