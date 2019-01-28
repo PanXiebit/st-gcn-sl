@@ -31,7 +31,7 @@ You can modify the preprocessing parameters in the command line or configuration
 
 ## Configuration
 
-Details on how to configure preprocessing can be obtained below.
+Details on how to configure preprocessing can be obtained below
 
 [config/](config/)
 

@@ -25,7 +25,7 @@ Project containing source code for ASLLVD dataset preprocessing
 
 ## Log Reader
 
-Auxiliary project for reading the **ST-GCN** logs
+Auxiliary project for reading the ST-GCN logs
 
 [log-reader/](log-reader/)
 
