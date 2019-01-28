@@ -3,7 +3,7 @@ import csv
 import argparse
 
 REGEX_EPOCH = r'Training epoch: (\d+)'
-REGEX_LOSS_LR = r'Iter (\d+) Done. \| loss: ([-+]?\d*\.\d+|\d+) \| lr: ([-+]?\d*\.\d+|\d+)'
+REGEX_LR = r'lr: ([-+]?\d*\.\d+|\d+)'
 REGEX_MEAN_LOSS = r'mean_loss: ([-+]?\d*\.\d+|\d+)'
 REGEX_TOP_1 = r'Top1: ([-+]?\d*\.\d+|\d+)%'
 REGEX_TOP_5 = r'Top5: ([-+]?\d*\.\d+|\d+)%'
@@ -11,7 +11,6 @@ REGEX_TOP_5 = r'Top5: ([-+]?\d*\.\d+|\d+)%'
 
 def read(file, output):
     cur_epoch = None
-    cur_loss = None
     cur_lr = None
     cur_mean_loss = None
     cur_top_1 = None
@@ -26,7 +25,7 @@ def read(file, output):
             txt = line[20:].strip()
 
             m_epoch = re.search(REGEX_EPOCH, txt)
-            m_loss_lr = re.search(REGEX_LOSS_LR, txt)
+            m_lr = re.search(REGEX_LR, txt)
             m_mean_loss = re.search(REGEX_MEAN_LOSS, txt)
             m_top_1 = re.search(REGEX_TOP_1, txt)
             m_top_5 = re.search(REGEX_TOP_5, txt)
@@ -36,8 +35,8 @@ def read(file, output):
                 cur_epoch = m_epoch.group(1)
 
             # LOSS, LR
-            if m_loss_lr:
-                cur_lr = m_loss_lr.group(3)
+            if m_lr:
+                cur_lr = m_lr.group(1)
 
             # MEAN LOSS
             if m_mean_loss:
@@ -65,7 +64,7 @@ def read(file, output):
 def write_csv(file_name, items):
     keys = items[0].keys()
 
-    with open(file_name, 'w') as csvfile:
+    with open(file_name, 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, keys)
         writer.writeheader()
         writer.writerows(items)

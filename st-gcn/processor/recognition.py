@@ -13,6 +13,7 @@ import torch.optim as optim
 # torchlight
 import torchlight
 from torchlight import str2bool
+from tools.utils.parser import str2list
 from torchlight import DictAction
 from torchlight import import_class
 
@@ -158,7 +159,7 @@ class REC_Processor(Processor):
         parser.add_argument('--step', type=int, default=[], nargs='+', help='the epoch where optimizer reduce the learning rate')
         parser.add_argument('--optimizer', default='SGD', help='type of optimizer')
         parser.add_argument('--nesterov', type=str2bool, default=True, help='use nesterov or not')
-        parser.add_argument('--weight_decay', type=float, default=0.0001, help='weight decay for optimizer')
+        parser.add_argument('--weight_decay', type=float, default=0.0001, help='weight decay for optimizer')     
         # endregion yapf: enable
 
         return parser
