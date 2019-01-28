@@ -15,6 +15,10 @@ Main project of **Spatial Temporal Graph Convolutional Networks for Sign Languag
 
 [st-gcn/](st-gcn/)
 
+You can download the pre-trained weights through the link
+
+[[Pre-trained Weights]](http://www.cin.ufpe.br/~cca5/st-gcn-sl/weights/)
+
 
 ## ASLLVD-Skeleton-Preproc
 
