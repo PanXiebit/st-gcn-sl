@@ -24,12 +24,17 @@ bash setup.sh
 
 
 ### Get pre-trained body, hand and face models
-The model weights can be downloaded by running the script
+The body, hand and face models can be downloaded by running the script
 ```
 bash tools/get_models.sh
 ```
 The downloaded models will be stored under ```./models```.
 
+
+### Get pre-trained weights
+The weights trained for the **ASLLVD-Skeleton** and **ASLLVD-Skeleton-20**  databases, according to the article presented above, can be downloaded from the link
+
+[[Pre-trained Weights]](http://www.cin.ufpe.br/~cca5/st-gcn-sl-weights/)
 
 ## Training
 To train a new ST-GCN model, run
