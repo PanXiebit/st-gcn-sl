@@ -12,7 +12,9 @@ This repository is a fork of the original repository available at the URL below,
 You can download **Spatial-Temporal Graph Convolutional Networks
 for Sign Language Recognition** paper through the link below
 
-[[ST-GCN for Sign Language Paper]](http://www.cin.ufpe.br/~cca5/st-gcn-sl/paper/)
+[[ST-GCN-SL Preprint]](http://www.cin.ufpe.br/~cca5/st-gcn-sl/preprint/)
+
+[[ST-GCN-SL Final Paper]](http://www.cin.ufpe.br/~cca5/st-gcn-sl/paper/)
 
 
 ## Installation
