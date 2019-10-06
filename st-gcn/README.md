@@ -54,11 +54,25 @@ python main.py -c config/sl/test.yaml --weights <path to model weights>
 ## Citation
 Please cite the following paper if you use this repository in your reseach.
 ```
-@article{stgcnsl2019,
-  title     = {Spatial-Temporal Graph Convolutional Networks for Sign Language Recognition},
-  author    = {Cleison Correia de Amorim and David Macêdo and Cleber Zanchettin},
-  year      = {2019},
+@InProceedings{10.1007/978-3-030-30493-5_59,
+	author="de Amorim, Cleison Correia
+	and Mac{\^e}do, David
+	and Zanchettin, Cleber",
+	editor="Tetko, Igor V.
+	and K{\r{u}}rkov{\'a}, V{\v{e}}ra
+	and Karpov, Pavel
+	and Theis, Fabian",
+	title="Spatial-Temporal Graph Convolutional Networks for Sign Language Recognition",
+	booktitle="Artificial Neural Networks and Machine Learning -- ICANN 2019: Workshop and Special Sessions",
+	year="2019",
+	publisher="Springer International Publishing",
+	address="Cham",
+	pages="646--657",
+	abstract="The recognition of sign language is a challenging task with an important role in society to facilitate the communication of deaf persons. We propose a new approach of Spatial-Temporal Graph Convolutional Network for sign language recognition based on the human skeletal movements. The method uses graphs to capture the dynamics of the signs in two dimensions, spatial and temporal, considering the complex aspects of the language. Additionally, we present a new dataset of human skeletons for sign language based on ASLLVD to contribute to future related studies.",
+	isbn="978-3-030-30493-5"
 }
+
+
 ```
 
 ## Contact
