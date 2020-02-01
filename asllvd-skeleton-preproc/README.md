@@ -36,7 +36,7 @@ Details on how to configure preprocessing can be obtained below
 [config/](config/)
 
 
-### Keypoints estimation (OpenPose)
+## Keypoints estimation (OpenPose)
 
 When estimating keypoints, OpenPose provides a JSON similar to the example below. 
 
