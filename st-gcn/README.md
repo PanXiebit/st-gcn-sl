@@ -56,21 +56,21 @@ python main.py -c config/sl/test.yaml --weights <path to model weights>
 ## Citation
 Please cite the following paper if you use this repository in your reseach.
 ```
-@InProceedings{10.1007/978-3-030-30493-5_59,
-	author="de Amorim, Cleison Correia
-	and Mac{\^e}do, David
-	and Zanchettin, Cleber",
-	editor="Tetko, Igor V.
-	and K{\r{u}}rkov{\'a}, V{\v{e}}ra
-	and Karpov, Pavel
-	and Theis, Fabian",
-	title="Spatial-Temporal Graph Convolutional Networks for Sign Language Recognition",
-	booktitle="Artificial Neural Networks and Machine Learning -- ICANN 2019: Workshop and Special Sessions",
-	year="2019",
-	publisher="Springer International Publishing",
-	address="Cham",
-	pages="646--657",
-	isbn="978-3-030-30493-5"
+@InProceedings{st-gcn-sl-2019,
+  author="de Amorim, Cleison Correia 
+          and Mac{\^e}do, David
+          and Zanchettin, Cleber",
+  editor="Tetko, Igor V.
+          and K{\r{u}}rkov{\'a}, V{\v{e}}ra
+          and Karpov, Pavel
+          and Theis, Fabian",
+  title="Spatial-Temporal Graph Convolutional Networks for Sign Language Recognition",
+  booktitle="Artificial Neural Networks and Machine Learning -- ICANN 2019: Workshop and Special Sessions",
+  year="2019",
+  publisher="Springer International Publishing",
+  address="Cham",
+  pages="646--657",
+  isbn="978-3-030-30493-5"
 }
 ```
 

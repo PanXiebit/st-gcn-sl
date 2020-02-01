@@ -198,7 +198,7 @@ This project, however, compacts the keypoints of all body parts into a single ar
     <img src="doc/media/keypoints_hand.png", width="200">
 </p>
 
-| OpenPose index | JSON Index | Body Part     |
+| OpenPose index | *New index*| Body part     |
 |----------------|------------|---------------|
 | 0              | 109        | Wrist         |
 | 1 - 4          | 110 - 113  | Thumb finger  |
@@ -211,10 +211,21 @@ This project, however, compacts the keypoints of all body parts into a single ar
 ## Citation
 Please cite the following paper if you use this repository in your reseach.
 ```
-@article{stgcnsl2019,
-  title     = {Spatial-Temporal Graph Convolutional Networks for Sign Language Recognition},
-  author    = {Cleison Correia de Amorim and David Macêdo and Cleber Zanchettin},
-  year      = {2019},
+@InProceedings{st-gcn-sl-2019,
+  author="de Amorim, Cleison Correia
+          and Mac{\^e}do, David
+          and Zanchettin, Cleber",
+  editor="Tetko, Igor V.
+          and K{\r{u}}rkov{\'a}, V{\v{e}}ra
+          and Karpov, Pavel
+          and Theis, Fabian",
+  title="Spatial-Temporal Graph Convolutional Networks for Sign Language Recognition",
+  booktitle="Artificial Neural Networks and Machine Learning -- ICANN 2019: Workshop and Special Sessions",
+  year="2019",
+  publisher="Springer International Publishing",
+  address="Cham",
+  pages="646--657",
+  isbn="978-3-030-30493-5"
 }
 ```
 
