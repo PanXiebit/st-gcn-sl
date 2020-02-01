@@ -38,7 +38,7 @@ Details on how to configure preprocessing can be obtained below
 
 ## Keypoints estimation (OpenPose)
 
-When estimating keypoints, OpenPose provides a JSON similar to the example below. 
+While estimating keypoints, OpenPose outputs a JSON similar to the example below. For every keypoint in 2D estimation, we have 2 entrances (X and Y axis) in array.
 
 ```
 {
@@ -81,14 +81,66 @@ When estimating keypoints, OpenPose provides a JSON similar to the example below
 }
 ```
 
-### Body parts estimation sequence:
+## Keypoints estimation by this project:
 
-The sequence in which body parts are disposed in OpenPose JSON is as follows. Its index and description are detailed in the next sections:
+Based on OpenPose estimated keypoints, this project outputs a JSON with different layout which contains information about keypoints and confidence score for every frame in a video. The output example is as follows:
+
+```
+{ 
+    "data":[ 
+       { 
+          "frame_index":5,
+          "skeleton":[ 
+             { 
+                "pose":[ 
+                   0.48204843750000004,
+                   0.26478958333333336,
+                   0.49021875000000004,
+                   0.42527291666666667,
+                   0.386240625,
+                   ... 
+                ],
+                "score":[ 
+                   0.895469,
+                   0.779048,
+                   0.684941,
+                   0.712129,
+                   0.660758,
+                   ...
+                ]
+             }
+          ]
+       },
+       { 
+          "frame_index":6,
+          "skeleton":[ 
+             { 
+                "pose":[ 
+                   ...
+                ],
+                "score":[ 
+                   ...
+                ]
+             }
+          ]
+       },
+       ...
+    ],
+    "label":"adopt",
+    "label_index":0
+ }
+ ```
+
+### Keypoints estimation relationship:
+
+There is a difference in the way keypoints indexes are presented by OpenPose and by the output shown above. OpenPose outputs the  keypoints for body parts in differente objects, in this sequence:
 * Pose (or body)
 * Face
-* Hands
-    * Left
-    * Right
+* Left hand
+* Right hand
+
+This project, however, compacts the keypoints of all body parts into a single array, but following the same sequence above. To simplify understanding, note the mapping presented in the following sections. 
+
 
 #### Body
 
@@ -96,14 +148,14 @@ The sequence in which body parts are disposed in OpenPose JSON is as follows. It
     <img src="doc/media/keypoints_pose_18.png", width="200">
 </p>
 
-| Keypoints | JSON Index | Body Part |
-|-----------|------------|-----------|
-| 0 - 1     | 0 - 1      | Neck      |
-| 2 - 4     | 2 - 4      | Right arm |
-| 5 - 7     | 5 - 7      | Left arm  |
-| 8 - 10    | 8 - 10     | Right leg |
-| 11 - 13   | 11 - 13    | Left leg  |
-| 14 - 17   | 14 - 17    | Head      |
+| OpenPose index | *New index*| Body part |
+|----------------|------------|-----------|
+| 0 - 1          | 0 - 1      | Neck      |
+| 2 - 4          | 2 - 4      | Right arm |
+| 5 - 7          | 5 - 7      | Left arm  |
+| 8 - 10         | 8 - 10     | Right leg |
+| 11 - 13        | 11 - 13    | Left leg  |
+| 14 - 17        | 14 - 17    | Head      |
 
 
 #### Head
@@ -112,17 +164,17 @@ The sequence in which body parts are disposed in OpenPose JSON is as follows. It
     <img src="doc/media/keypoints_face.png", width="450">
 </p>
 
-| Keypoints | JSON Index | Body Part     |
-|-----------|------------|---------------|
-| 0 - 16    | 18 - 34    | Face          |
-| 17 - 21   | 35 - 39    | Right eyebrow |
-| 22 - 26   | 40 - 44    | Left eyebrow  |
-| 27 - 35   | 45 - 53    | Nose          |
-| 36 - 41   | 54 - 59    | Right eye     |
-| 42 - 47   | 60 - 65    | Left eye      |
-| 48 - 67   | 66 - 85    | Mouth         |
-| 68        | 86         | Right eyeball |
-| 69        | 87         | Left eyeball  |
+| OpenPose index | *New index*| Body part     |
+|----------------|------------|---------------|
+| 0 - 16         | 18 - 34    | Face          |
+| 17 - 21        | 35 - 39    | Right eyebrow |
+| 22 - 26        | 40 - 44    | Left eyebrow  |
+| 27 - 35        | 45 - 53    | Nose          |
+| 36 - 41        | 54 - 59    | Right eye     |
+| 42 - 47        | 60 - 65    | Left eye      |
+| 48 - 67        | 66 - 85    | Mouth         |
+| 68             | 86         | Right eyeball |
+| 69             | 87         | Left eyeball  |
 
 
 #### Left Hand
@@ -131,14 +183,14 @@ The sequence in which body parts are disposed in OpenPose JSON is as follows. It
     <img src="doc/media/keypoints_hand.png", width="200">
 </p>
 
-| Keypoints | JSON Index | Body Part     |
-|-----------|------------|---------------|
-| 0         | 88         | Wrist         |
-| 1 - 4     | 89 - 92    | Thumb finger  |
-| 5 - 8     | 93 - 96    | Index finger  |
-| 9 - 12    | 97 - 100   | Middle finger |
-| 13 - 16   | 101 - 104  | Ring finger   |
-| 17 - 20   | 105 - 108  | Little finger |
+| OpenPose index | *New index*| Body part     |
+|----------------|------------|---------------|
+| 0              | 88         | Wrist         |
+| 1 - 4          | 89 - 92    | Thumb finger  |
+| 5 - 8          | 93 - 96    | Index finger  |
+| 9 - 12         | 97 - 100   | Middle finger |
+| 13 - 16        | 101 - 104  | Ring finger   |
+| 17 - 20        | 105 - 108  | Little finger |
 
 #### Right Hand
 
@@ -146,14 +198,14 @@ The sequence in which body parts are disposed in OpenPose JSON is as follows. It
     <img src="doc/media/keypoints_hand.png", width="200">
 </p>
 
-| Keypoints | JSON Index | Body Part     |
-|-----------|------------|---------------|
-| 0         | 109        | Wrist         |
-| 1 - 4     | 110 - 113  | Thumb finger  |
-| 5 - 8     | 114 - 117  | Index finger  |
-| 9 - 12    | 118 - 121  | Middle finger |
-| 13 - 16   | 122 - 125  | Ring finger   |
-| 17 - 20   | 126 - 129  | Little finger |
+| OpenPose index | JSON Index | Body Part     |
+|----------------|------------|---------------|
+| 0              | 109        | Wrist         |
+| 1 - 4          | 110 - 113  | Thumb finger  |
+| 5 - 8          | 114 - 117  | Index finger  |
+| 9 - 12         | 118 - 121  | Middle finger |
+| 13 - 16        | 122 - 125  | Ring finger   |
+| 17 - 20        | 126 - 129  | Little finger |
 
 
 ## Citation
@@ -171,3 +223,4 @@ For any question, feel free to contact me at
 ```
 Cleison Amorim  : cca5@cin.ufpe.br
 ```
+
