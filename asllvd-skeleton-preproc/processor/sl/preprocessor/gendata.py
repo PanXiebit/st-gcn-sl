@@ -18,11 +18,11 @@ class Gendata_Preprocessor(Preprocessor):
 
     def __init__(self, argv=None):
         super().__init__('normalize', argv)
-        self.joints = self.arg.gendata['joints']
-        self.channels = self.arg.gendata['channels']
-        self.num_person = self.arg.gendata['num_person']
-        self.max_frames = self.arg.gendata['max_frames']
-        self.repeat_frames = self.arg.gendata['repeat_frames']
+        self.joints = self.arg.normalize['joints']
+        self.channels = self.arg.normalize['channels']
+        self.num_person = self.arg.normalize['num_person']
+        self.max_frames = self.arg.normalize['max_frames']
+        self.repeat_frames = self.arg.normalize['repeat_frames']
 
     def start(self):
         self.print_log("Source directory: {}".format(self.input_dir))

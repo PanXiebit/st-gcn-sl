@@ -88,7 +88,7 @@ class Keypoint_Preprocessor(Preprocessor):
         return label_map
 
     def __get_keypoints(self, arg):
-        arg_points = arg.keypoint['points']
+        arg_points = arg.filter['points']
         arg_points = arg_points.replace(' ', '')
         arg_points = utils.parser.str2list(arg_points)
         keypoints = list()

@@ -143,7 +143,7 @@ class OpenPose_Preprocessor(Preprocessor):
 
     def get_openpose_path(self, arg):
         openpose_path = self.OPENPOSE_PATH.format(
-            arg.pose['openpose'])
+            arg.skeleton['openpose'])
         openpose_path = os.path.realpath(openpose_path)
 
         if not os.path.isfile(openpose_path):
@@ -154,8 +154,8 @@ class OpenPose_Preprocessor(Preprocessor):
     def get_model_path(self, arg):
         model_path = None
 
-        if 'model_path' in arg.pose:
-            model_path = arg.pose['model_path']
+        if 'model_path' in arg.skeleton:
+            model_path = arg.skeleton['model_path']
         else:
             model_path = self.MODEL_PATH
 
