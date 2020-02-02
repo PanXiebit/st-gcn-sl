@@ -11,7 +11,7 @@ from .gendata_feeder import Gendata_Feeder
 from .preprocessor import Preprocessor
 
 
-class Gendata_Preprocessor(Preprocessor):
+class Normalize_Preprocessor(Preprocessor):
     """
         Generate data
     """

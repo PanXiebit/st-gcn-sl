@@ -14,7 +14,7 @@ import tools.utils as utils
 from .preprocessor import Preprocessor
 
 
-class Holdout_Preprocessor(Preprocessor):
+class Split_Preprocessor(Preprocessor):
     """
         Proprocessing though Hold Out split
     """

@@ -8,7 +8,7 @@ from tools import utils
 from .preprocessor import Preprocessor
 
 
-class Keypoint_Preprocessor(Preprocessor):
+class Filter_Preprocessor(Preprocessor):
     """
         Select estimated keypoints
     """

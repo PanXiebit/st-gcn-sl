@@ -66,15 +66,15 @@ class Video_Preprocessor(IO):
             download=import_class(
                 'processor.sl.preprocessor.downloader.Downloader_Preprocessor'),
             segment=import_class(
-                'processor.sl.preprocessor.splitter.Splitter_Preprocessor'),
+                'processor.sl.preprocessor.segment.Segment_Preprocessor'),
             skeleton=import_class(
-                'processor.sl.preprocessor.openpose.OpenPose_Preprocessor'),
+                'processor.sl.preprocessor.skeleton.Skeleton_Preprocessor'),
             filter=import_class(
-                'processor.sl.preprocessor.keypoint.Keypoint_Preprocessor'),
+                'processor.sl.preprocessor.filter.Filter_Preprocessor'),
             split=import_class(
-                'processor.sl.preprocessor.holdout.Holdout_Preprocessor'),
+                'processor.sl.preprocessor.split.Split_Preprocessor'),
             normalize=import_class(
-                'processor.sl.preprocessor.gendata.Gendata_Preprocessor')
+                'processor.sl.preprocessor.normalize.Normalize_Preprocessor')
         )
 
     def print_phase(self, name):

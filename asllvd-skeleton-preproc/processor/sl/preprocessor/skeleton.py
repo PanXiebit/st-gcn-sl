@@ -8,7 +8,7 @@ from tools import utils
 from .preprocessor import Preprocessor
 
 
-class OpenPose_Preprocessor(Preprocessor):
+class Skeleton_Preprocessor(Preprocessor):
     """
         Preprocessor form pose estimation with OpenPose
     """

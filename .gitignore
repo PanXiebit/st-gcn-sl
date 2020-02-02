@@ -2,3 +2,4 @@ wget-log*
 work_dir/*
 .vscode/.ropeproject/*
 *.pyc
+log.txt

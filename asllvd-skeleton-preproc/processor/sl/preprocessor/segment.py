@@ -8,16 +8,16 @@ import ffmpy
 from .preprocessor import Preprocessor
 
 
-class Splitter_Preprocessor(Preprocessor):
+class Segment_Preprocessor(Preprocessor):
     """
         Preprocessor for splitting original videos
     """
 
     def __init__(self, argv=None):
         super().__init__('segment', argv)
-        self.fps_in = self.arg.split['fps_in']
-        self.fps_out = self.arg.split['fps_out']
-        # self.max_frames = self.arg.split['max_frames']
+        self.fps_in = self.arg.segment['fps_in']
+        self.fps_out = self.arg.segment['fps_out']
+        # self.max_frames = self.arg.segment['max_frames']
 
     def start(self):
         # Load metadata:
@@ -31,7 +31,7 @@ class Splitter_Preprocessor(Preprocessor):
             # Split videos:
             self.print_log("Source directory: '{}'".format(self.input_dir))
             self.print_log("Splitting videos to '{}'...".format(self.output_dir))
-            labels, files_labels = self.split_videos(
+            labels, files_labels = self.segment_videos(
                 metadata, self.input_dir, self.output_dir)
 
             # Save labels:
@@ -71,7 +71,7 @@ class Splitter_Preprocessor(Preprocessor):
 
                         # Split file in temporary diretory:
                         self.print_file(tgt_filename, src_filename, start, end)
-                        self.split_video(src_filepath, tmp_filepath,
+                        self.segment_video(src_filepath, tmp_filepath,
                                          sign, start, end,
                                          self.fps_in, self.fps_out)
 
