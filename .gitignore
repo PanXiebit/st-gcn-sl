@@ -1,5 +1,5 @@
 wget-log*
 work_dir/*
-.vscode/.ropeproject/*
+.vscode/*
 *.pyc
 log.txt
