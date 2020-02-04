@@ -50,7 +50,7 @@ class Preprocessor(IO):
         i = int(percentual // (100 / increments))
         prefix = "{} ".format(message) if message else ""
         text = "\r{}|{: <{}}| {:.0f}%".format(
-            prefix, '█' * i, increments, percentual)
+            prefix, '#' * i, increments, percentual)
 
         if overwritable:
             end = "\r"

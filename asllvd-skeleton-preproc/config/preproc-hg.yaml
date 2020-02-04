@@ -1,5 +1,5 @@
-work_dir: C:\\Users\\cleison.c.amorim\\Downloads\\mestrado\\workdir
-metadata_file: C:\\Users\\cleison.c.amorim\\Downloads\\mestrado\\workdir\\dai-asllvd.xlsx
+work_dir: /home/student/dl4/ca/workdir
+metadata_file: /home/student/dl4/ca/workdir/dai-asllvd.xlsx
 clean_workdir: False
 
 phases:  
@@ -35,14 +35,14 @@ filter:
 split:
   input_dir: ./filtered
   output_dir: ./splitted
-  test: 20
+  test: 33
   val: 0
   seed: 2
 
 normalize:
   input_dir: ./splitted
   output_dir: ./normalized
-  joints: 27
+  joints: 47
   channels: 3
   num_person: 1
   repeat_frames: True
@@ -53,4 +53,4 @@ debug_opts:
   split_items: 5
   pose_items: 5
   gendata_items: 5
-  gendata_joints: 27
+  gendata_joints: 47
