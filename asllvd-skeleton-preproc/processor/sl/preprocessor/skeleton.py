@@ -132,6 +132,7 @@ class Skeleton_Preprocessor(Preprocessor):
         if not self.arg.debug:
             args['--face'] = ''
             args['--hand'] = ''
+            args['--3d'] = ''
 
         command_line = self.create_command_line(command, args)
         FNULL = open(os.devnull, 'w')
