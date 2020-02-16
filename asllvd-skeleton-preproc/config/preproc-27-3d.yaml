@@ -27,6 +27,7 @@ skeleton:
   input_dir: ./segmented
   output_dir: ./skeleton
   # model_path: ./st-gcn/models
+  3d: True
 
 filter:
   input_dir: ./skeleton
