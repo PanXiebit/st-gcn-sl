@@ -126,13 +126,17 @@ class Skeleton_Preprocessor(Preprocessor):
             '--display': 0,
             '--render_pose': 0,
             '--model_pose': 'COCO',
-            '--model_folder': self.model_path
+            '--model_folder': self.model_path,
+            '--logging_level': 3
         }
 
         if not self.arg.debug:
             args['--face'] = ''
             args['--hand'] = ''
-            args['--3d'] = ''
+
+            if self.arg.skeleton['3d']:
+                args['--3d'] = ''
+                args['--number_people_max'] = '1'
 
         command_line = self.create_command_line(command, args)
         FNULL = open(os.devnull, 'w')
