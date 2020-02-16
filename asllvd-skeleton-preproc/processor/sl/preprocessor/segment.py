@@ -39,7 +39,7 @@ class Segment_Preprocessor(Preprocessor):
             self.save_labels(self.output_dir, labels, files_labels)
             self.print_log("Split finished.")
 
-    def split_videos(self, metadata, input_dir, output_dir):
+    def segment_videos(self, metadata, input_dir, output_dir):
         labels = set()
         files_labels = dict()
         files_splitted = set()
@@ -96,7 +96,7 @@ class Segment_Preprocessor(Preprocessor):
         self.print_log(
             "* {} \t {} [{:.0f}~{:.0f}]".format(tgt_filename, src_filename, start, end))
 
-    def split_video(self, input_file, output_file,
+    def segment_video(self, input_file, output_file,
                     sign, start, end,
                     input_fps, output_fps):
         # Create video name:

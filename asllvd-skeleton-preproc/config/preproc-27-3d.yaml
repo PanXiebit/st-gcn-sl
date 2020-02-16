@@ -23,10 +23,10 @@ segment:
   fps_out: 30
 
 skeleton:
-  openpose: /usr/local/openpose/build
+  openpose: /usr/local/openpose
   input_dir: ./segmented
   output_dir: ./skeleton
-  model_path: ./st-gcn/models
+  # model_path: ./st-gcn/models
 
 filter:
   input_dir: ./skeleton
