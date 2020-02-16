@@ -13,8 +13,8 @@ class Skeleton_Preprocessor(Preprocessor):
         Preprocessor form pose estimation with OpenPose
     """
 
-    OPENPOSE_PATH = '{}/examples/openpose/openpose.bin'
-    MODEL_PATH = './st-gcn/models'
+    OPENPOSE_PATH = '{}/build/examples/openpose/openpose.bin'
+    MODEL_PATH = '{}/models'
 
     def __init__(self, argv=None):
         super().__init__('skeleton', argv)
@@ -158,7 +158,8 @@ class Skeleton_Preprocessor(Preprocessor):
         if 'model_path' in arg.skeleton:
             model_path = arg.skeleton['model_path']
         else:
-            model_path = self.MODEL_PATH
+            model_path = self.MODEL_PATH.format(
+                arg.skeleton['openpose'])
 
         model_path = os.path.realpath(model_path)
 
