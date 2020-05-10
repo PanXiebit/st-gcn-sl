@@ -1,16 +1,16 @@
-work_dir: /home/student/dl2/grp5/cca5/dataset/recognition/LAST
+work_dir: ../../../work/st-gcn-sl/LAST
 
 # feeder
 feeder: feeder.feeder.Feeder
 train_feeder_args:
   random_choose: True
   random_move: False
-  window_size: 63
-  data_path: /home/student/dl2/grp5/cca5/dataset/preprocessed/train_data.npy 
-  label_path: /home/student/dl2/grp5/cca5/dataset/preprocessed/train_label.pkl
+  window_size: 60
+  data_path: ../../../data/asllvd-skeleton-20/normalized/train_data.npy 
+  label_path: ../../../data/asllvd-skeleton-20/normalized/train_label.pkl
 test_feeder_args:
-  data_path: /home/student/dl2/grp5/cca5/dataset/preprocessed/test_data.npy
-  label_path: /home/student/dl2/grp5/cca5/dataset/preprocessed/test_label.pkl
+  data_path: ../../../data/asllvd-skeleton-20/normalized/test_data.npy
+  label_path: ../../../data/asllvd-skeleton-20/normalized/test_label.pkl
 
 log_interval: 25
 
@@ -41,12 +41,12 @@ model_args:
 
 # training
 device: [0]
-batch_size: 16
-test_batch_size: 16
+batch_size: 24
+test_batch_size: 24
 
 #optim
 optimizer: SGD
 nesterov: True
 base_lr: 0.01
-step: [50, 100, 150, 200]
-num_epoch: 300
+step: [50, 100, 150]
+num_epoch: 200
