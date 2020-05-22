@@ -1,0 +1,59 @@
+# command line: main.py recognition -c config/sl/train.yaml
+
+base_lr: 0.01
+batch_size: 8
+config: config/sl/train.yaml
+debug: false
+device:
+- 0
+eval_interval: 5
+feeder: feeder.feeder.Feeder
+ignore_weights: []
+log_interval: 25
+model: net.st_gcn.Model
+model_args:
+    edge_importance_weighting: true
+    graph_args:
+        custom_layout:
+            center: 0
+            edge: (0, 1), (1, 2), (2, 16) (0, 3), (3, 4), (4, 5), (5, 6), (6, 7),
+                (5, 8), (8, 9), (5, 10), (10, 11), (5, 12), (12, 13), (5, 14), (14,
+                15), (16, 17), (17, 18), (16, 19), (19, 20), (16, 21), (21, 22), (16,
+                23), (23, 24), (16, 25), (25, 26)
+            num_node: 27
+        layout: custom
+        strategy: spatial
+    in_channels: 3
+    num_class: 20
+nesterov: true
+num_epoch: 200
+num_worker: 4
+optimizer: SGD
+pavi_log: false
+phase: train
+print_log: true
+save_interval: 10
+save_log: true
+save_result: false
+show_topk:
+- 1
+- 5
+start_epoch: 0
+step:
+- 50
+- 100
+- 150
+test_batch_size: 8
+test_feeder_args:
+    data_path: ~/data/asllvd-skeleton-20/normalized/test_data.npy
+    label_path: ~/data/asllvd-skeleton-20/normalized/test_label.pkl
+train_feeder_args:
+    data_path: ~/data/asllvd-skeleton-20/normalized/train_data.npy
+    label_path: ~/data/asllvd-skeleton-20/normalized/train_label.pkl
+    random_choose: true
+    random_move: false
+    window_size: 60
+use_gpu: true
+weight_decay: 0.0001
+weights: null
+work_dir: ~/work/st-gcn-sl/LAST
